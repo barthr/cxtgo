@@ -74,6 +74,10 @@ func (b *Binance) CancelOrder(ctx context.Context) (Response, error) {
 	panic("not implemented")
 }
 
+func (b *Binance) CancelAllOrders(ctx context.Context) (Response, error) {
+	panic("not implemented")
+}
+
 func (b *Binance) FetchOrder(ctx context.Context) (Response, error) {
 	panic("not implemented")
 }
