@@ -1,9 +1,10 @@
 package exchange
 
 type MarketPrecision struct {
-	Price  int
+	Base   int
+	Quote  int
 	Amount int
-	Cost   int
+	Price  int
 }
 
 type MinMax struct {
@@ -14,6 +15,7 @@ type MinMax struct {
 type MarketLimit struct {
 	Amount MinMax
 	Price  MinMax
+	Cost   MinMax
 }
 
 type MarketInfo struct {
@@ -24,5 +26,8 @@ type MarketInfo struct {
 	Active    bool
 	Precision MarketPrecision
 	Limits    MarketLimit
+	Lot       float64
+	Taker     float64
+	Maker     float64
 	Raw       []byte
 }

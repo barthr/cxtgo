@@ -2,6 +2,7 @@ package cxtgo
 
 import (
 	"context"
+	"strconv"
 	"strings"
 
 	"go.uber.org/ratelimit"
@@ -50,23 +51,60 @@ func (b *Binance) LoadMarkets(ctx context.Context) (map[exchange.Symbol]exchange
 	}
 
 	marketInfos := map[exchange.Symbol]exchange.MarketInfo{}
-
 	for _, symbol := range info.Symbols {
 		internalSymbol := exchange.NewSymbol(symbol.BaseAsset, symbol.QuoteAsset)
+
+		minPrice, err := strconv.ParseFloat(symbol.Filters[0]["minPrice"], 64)
+		if err != nil {
+			return nil, ConversionError{ExchangeError{"binance", err}}
+		}
+		maxPrice, err := strconv.ParseFloat(symbol.Filters[0]["maxPrice"], 64)
+		if err != nil {
+			return nil, ConversionError{ExchangeError{"binance", err}}
+		}
+		lotSize, err := strconv.ParseFloat(symbol.Filters[1]["stepSize"], 64)
+		if err != nil {
+			return nil, ConversionError{ExchangeError{"binance", err}}
+		}
+		minQty, err := strconv.ParseFloat(symbol.Filters[1]["minQty"], 64)
+		if err != nil {
+			return nil, ConversionError{ExchangeError{"binance", err}}
+		}
+		maxQty, err := strconv.ParseFloat(symbol.Filters[1]["maxQty"], 64)
+		if err != nil {
+			return nil, ConversionError{ExchangeError{"binance", err}}
+		}
+		minNotional, err := strconv.ParseFloat(symbol.Filters[2]["minNotional"], 64)
+		if err != nil {
+			return nil, ConversionError{ExchangeError{"binance", err}}
+		}
 		marketInfos[internalSymbol] = exchange.MarketInfo{
 			ID:     strings.ToLower(symbol.Symbol),
 			Base:   symbol.BaseAsset,
 			Quote:  symbol.QuoteAsset,
 			Symbol: internalSymbol,
+			Maker:  0.001,
+			Taker:  0.001,
 			Active: true,
 			Precision: exchange.MarketPrecision{
-				Price:  8,
-				Amount: 8,
-				Cost:   8,
+				Base:   symbol.BaseAssetPrecision,
+				Quote:  symbol.QuotePrecision,
+				Price:  precisionFromString(symbol.Filters[0]["minPrice"], "."),
+				Amount: precisionFromString(symbol.Filters[1]["minQty"], "."),
 			},
+			Lot: lotSize,
 			Limits: exchange.MarketLimit{
-				Price:  exchange.MinMax{},
-				Amount: exchange.MinMax{},
+				Price: exchange.MinMax{
+					Min: minPrice,
+					Max: maxPrice,
+				},
+				Amount: exchange.MinMax{
+					Min: minQty,
+					Max: maxQty,
+				},
+				Cost: exchange.MinMax{
+					Min: minNotional,
+				},
 			},
 			// todo raw
 		}
@@ -144,4 +182,19 @@ func (b *Binance) Deposit(ctx context.Context) (Response, error) {
 
 func (b *Binance) Withdraw(ctx context.Context) (Response, error) {
 	panic("not implemented")
+}
+
+func precisionFromString(input string, splitter string) int {
+	parts := strings.Split(input, splitter)
+	pricePrecision := 0
+	if len(parts) != 2 {
+		return 0
+	}
+	for _, item := range parts[1] {
+		pricePrecision++
+		if item != '0' {
+			break
+		}
+	}
+	return pricePrecision
 }

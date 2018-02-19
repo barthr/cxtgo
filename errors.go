@@ -13,3 +13,5 @@ func (ee ExchangeError) Error() string {
 
 // NetworkError defines a network error from the exchange
 type NetworkError struct{ ExchangeError }
+
+type ConversionError struct{ ExchangeError }
