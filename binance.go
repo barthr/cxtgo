@@ -26,7 +26,7 @@ type Binance struct {
 }
 
 // NewBinance returns an instance of the binance exchange
-func NewBinance(config *base.Config, opts ...base.ExchangeOpt) *Binance {
+func NewBinance(opts ...base.ExchangeOpt) *Binance {
 	binanceOpts := []base.ExchangeOpt{
 		base.WithName("Binance"),
 		base.WithUserAgent("cxt/0.1"),
@@ -37,7 +37,7 @@ func NewBinance(config *base.Config, opts ...base.ExchangeOpt) *Binance {
 	ex := base.NewExchange(binanceOpts...)
 	b := &Binance{
 		base:   ex,
-		client: binance.NewClient(config.APIKEY, config.APISecret),
+		client: binance.NewClient(ex.APIKEY, ex.APISecret),
 	}
 	return b
 }
