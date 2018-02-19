@@ -14,6 +14,21 @@ func WithName(name string) Opt {
 	}
 }
 
+// WithURLs sets the urls for the exchange
+// Valid urls are things like the documentation, website etc.
+func WithURLs(urls map[string]string) Opt {
+	return func(b *Base) {
+		b.URLs = urls
+	}
+}
+
+// WithID sets the id for the exchange
+func WithID(id string) Opt {
+	return func(b *Base) {
+		b.ID = id
+	}
+}
+
 // WithVersion sets the version for the exchange
 func WithVersion(version string) Opt {
 	return func(b *Base) {
