@@ -1,10 +1,10 @@
 package cxtgo
 
-import "github.com/barthr/cxtgo/base"
+import "github.com/barthr/cxtgo/exchange"
 
 type OrderBookResponse struct {
 	Response
-	Orderbook base.OrderBook
+	Orderbook exchange.OrderBook
 }
 
 type TickerResponse struct {

@@ -4,25 +4,25 @@ import (
 	"context"
 
 	binance "github.com/adshao/go-binance"
-	"github.com/barthr/cxtgo/base"
+	"github.com/barthr/cxtgo/exchange"
 )
 
 // Binance is the binance implementation for cxtgo interface
 type Binance struct {
-	base   *base.Exchange
+	base   *exchange.Base
 	client *binance.Client
 }
 
 // NewBinance returns an instance of the binance exchange
-func NewBinance(opts ...base.ExchangeOpt) *Binance {
-	binanceOpts := []base.ExchangeOpt{
-		base.WithName("Binance"),
-		base.WithUserAgent("cxt/0.1"),
-		base.WithVersion("v3"),
+func NewBinance(opts ...exchange.Opt) *Binance {
+	binanceOpts := []exchange.Opt{
+		exchange.WithName("Binance"),
+		exchange.WithUserAgent("cxt/0.1"),
+		exchange.WithVersion("v3"),
 	}
 	binanceOpts = append(binanceOpts, opts...)
 
-	ex := base.NewExchange(binanceOpts...)
+	ex := exchange.NewBase(binanceOpts...)
 	b := &Binance{
 		base:   ex,
 		client: binance.NewClient(ex.APIKEY, ex.APISecret),
@@ -30,7 +30,7 @@ func NewBinance(opts ...base.ExchangeOpt) *Binance {
 	return b
 }
 
-func (b *Binance) Info() base.Exchange {
+func (b *Binance) Info() exchange.Base {
 	return *b.base
 }
 

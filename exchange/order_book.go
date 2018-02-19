@@ -1,4 +1,4 @@
-package base
+package exchange
 
 // Orderbook is a definition for an orderbook
 type OrderBook interface {

@@ -1,4 +1,4 @@
-package base
+package exchange
 
 type MarketPrecision struct {
 	Price  int
