@@ -2,6 +2,8 @@ package cxtgo
 
 import (
 	"context"
+
+	"github.com/barthr/cxtgo/base"
 )
 
 // Compile time helpers to check if the implementation implement the desired interfaces
@@ -45,6 +47,13 @@ type PrivateExchange interface {
 }
 
 type FullExchange interface {
+	Info() base.Exchange
+
 	PublicExchange
 	PrivateExchange
+}
+
+type MarketError struct {
+	Exchange string
+	Cause    error
 }

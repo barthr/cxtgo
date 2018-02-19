@@ -1,4 +1,4 @@
-package cxtgo
+package base
 
 import (
 	"sort"

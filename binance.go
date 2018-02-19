@@ -42,6 +42,10 @@ func NewBinance(opts ...base.ExchangeOpt) *Binance {
 	return b
 }
 
+func (b *Binance) Info() base.Exchange {
+	return *b.base
+}
+
 func (b *Binance) LoadMarkets(ctx context.Context) (Response, error) {
 	panic("not implemented")
 }

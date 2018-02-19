@@ -42,6 +42,13 @@ func WithAPISecret(secret string) ExchangeOpt {
 	}
 }
 
+// WithCountries sets the api countries for the exchange
+func WithCountries(countries ...string) ExchangeOpt {
+	return func(ex *Exchange) {
+		ex.Countries = countries
+	}
+}
+
 // NewExchange returns a new exchange with the given opts applied
 func NewExchange(opts ...ExchangeOpt) *Exchange {
 	ex := &Exchange{
@@ -67,6 +74,6 @@ type Exchange struct {
 	Endpoints  map[string]string
 	Has        map[string]bool
 	TimeFrames map[string]time.Duration
+	Market     map[string]MarketInfo
 	RateLimit  time.Duration
-	Config     Config
 }
