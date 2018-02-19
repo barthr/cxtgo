@@ -28,6 +28,20 @@ func WithUserAgent(userAgent string) ExchangeOpt {
 	}
 }
 
+// WithAPIKey sets the api key for the exchange
+func WithAPIKey(key string) ExchangeOpt {
+	return func(ex *Exchange) {
+		ex.APIKEY = key
+	}
+}
+
+// WithAPISecret sets the api secret for the exchange
+func WithAPISecret(secret string) ExchangeOpt {
+	return func(ex *Exchange) {
+		ex.APISecret = secret
+	}
+}
+
 // NewExchange returns a new exchange with the given opts applied
 func NewExchange(opts ...ExchangeOpt) *Exchange {
 	ex := &Exchange{
@@ -46,6 +60,8 @@ type Exchange struct {
 	Name       string
 	Version    string
 	UserAgent  string
+	APIKEY     string
+	APISecret  string
 	Countries  []string
 	URLs       map[string]string
 	Endpoints  map[string]string
