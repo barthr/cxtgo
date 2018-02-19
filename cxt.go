@@ -2,6 +2,11 @@ package cxtgo
 
 import "context"
 
+// Compile time helpers to check if the implementation implement the desired interfaces
+var (
+	_ = (FullExchange)(&Binance{})
+)
+
 // Lotter is the interface for converting amounts to lot sizes
 type Lotter interface {
 	AmountToLots(float64) float64
@@ -35,4 +40,9 @@ type PrivateExchange interface {
 	FetchMyTrades(ctx context.Context) (Response, error)
 	Deposit(ctx context.Context) (Response, error)
 	Withdraw(ctx context.Context) (Response, error)
+}
+
+type FullExchange interface {
+	PublicExchange
+	PrivateExchange
 }
