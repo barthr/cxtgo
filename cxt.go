@@ -27,7 +27,7 @@ type PublicExchange interface {
 	FetchMarkets(ctx context.Context) (Response, error)
 	FetchTicker(ctx context.Context) (Response, error)
 	FetchTickers(ctx context.Context) (Response, error)
-	FetchOrderBook(ctx context.Context) (OrderBookResponse, error)
+	FetchOrderBook(ctx context.Context) (Response, error)
 	FetchOHLCV(ctx context.Context) (Response, error)
 	FetchTrades(ctx context.Context) (Response, error)
 }
