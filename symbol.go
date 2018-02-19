@@ -8,6 +8,24 @@ type Symbol struct {
 	second string
 }
 
+// Symbols is a container type for multiple symbols
+type Symbols []Symbol
+
+// Len returns the length of s
+func (s Symbols) Len() int {
+	return len(s)
+}
+
+// Less defines the order of s for sorting
+func (s Symbols) Less(i int, j int) bool {
+	return s[i].String() < s[j].String()
+}
+
+// Swap swaps elements in s
+func (s Symbols) Swap(i int, j int) {
+	s[i], s[j] = s[j], s[i]
+}
+
 // First returns the first currency from the Symbol
 func (p Symbol) First() string {
 	return p.first
