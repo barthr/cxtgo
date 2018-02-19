@@ -3,7 +3,7 @@ package cxtgo
 import (
 	"sort"
 
-	"github.com/xtgo/set"
+	"github.com/barthr/set"
 )
 
 // Symbol represents a combination of two currencies (BTCUSD)
