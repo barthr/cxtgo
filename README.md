@@ -1,6 +1,8 @@
 # Cxtgo : general interface to popular cryptocurrency exchanges
 
-## Overview [![GoDoc](https://godoc.org/github.com/barthr/cxtgo?status.svg)](https://godoc.org/github.com/barthr/cxtgo) [![Build Status](https://travis-ci.org/barthr/cxtgo.svg?branch=master)](https://travis-ci.org/barthr/cxtgo) [![Go Report Card](https://goreportcard.com/badge/github.com/barthr/cxtgo)](https://goreportcard.com/report/github.com/barthr/cxtgo)
+## Overview [![GoDoc](https://godoc.org/github.com/barthr/cxtgo?status.svg)](https://godoc.org/github.com/barthr/cxtgo) [![Build Status](https://travis-ci.org/barthr/cxtgo.svg?branch=master)](https://travis-ci.org/barthr/cxtgo) [![Go Report Card](https://goreportcard.com/badge/github.com/barthr/cxtgo)](https://goreportcard.com/report/github.com/barthr/cxtgo) [![codecov](https://codecov.io/gh/barthr/cxtgo/branch/master/graph/badge.svg)](https://codecov.io/gh/barthr/cxtgo)
+
+
 
 Cxtgo provides an general interface for popular cryptocurrency exchanges. It's inspired by https://www.ccxt.trade library but with a more idiomatic interface. Cxtgo primary focus is based on websockets and performance, making it very suitable for high frequency trading algorithms.
 
