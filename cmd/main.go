@@ -4,14 +4,14 @@ import (
 	"fmt"
 
 	"github.com/barthr/cxtgo"
-	"github.com/barthr/cxtgo/base"
+	"github.com/barthr/cxtgo/exchange"
 )
 
 func main() {
 	binance := cxtgo.NewBinance(
-		base.WithAPIKey("test"),
-		base.WithAPISecret("test"),
-		base.WithCountries("bart"),
+		exchange.WithAPIKey("test"),
+		exchange.WithAPISecret("test"),
+		exchange.WithCountries("bart"),
 	)
 
 	fmt.Println(binance.Info().Countries)
