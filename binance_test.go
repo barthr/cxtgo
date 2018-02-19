@@ -38,7 +38,7 @@ func TestNewBinance(t *testing.T) {
 				opts: nil,
 			},
 			want: &Binance{
-				Exchange: base.Exchange{
+				Exchange: &base.Exchange{
 					Name: "binance",
 					Config: base.Config{
 						APISecret: "",
@@ -62,7 +62,7 @@ func TestNewBinance(t *testing.T) {
 				},
 			},
 			want: &Binance{
-				Exchange: base.Exchange{
+				Exchange: &base.Exchange{
 					Name: "binance",
 					Config: base.Config{
 						APISecret: "",

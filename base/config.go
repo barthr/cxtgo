@@ -5,4 +5,5 @@ type Config struct {
 	APIKEY, APISecret string
 	RateLimit         bool
 	Websocket         bool
+	Verbose           bool
 }

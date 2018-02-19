@@ -21,25 +21,24 @@ type BinanceOptFunc func(*Binance)
 
 // Binance is the binance implementation for cxtgo interface
 type Binance struct {
-	base.Exchange
+	*base.Exchange
 
 	client *binance.Client
 }
 
 // NewBinance returns an instance of the binance exchange
-func NewBinance(config *base.Config, opts ...BinanceOptFunc) *Binance {
-	if config == nil {
-		return nil
+func NewBinance(config *base.Config, opts ...base.ExchangeOpt) *Binance {
+	binanceOpts := []base.ExchangeOpt{
+		base.WithName("Binance"),
+		base.WithUserAgent("cxt/0.1"),
+		base.WithVersion("v3"),
 	}
+	binanceOpts = append(binanceOpts, opts...)
+
+	ex := base.NewExchange(binanceOpts...)
 	b := &Binance{
-		Exchange: base.Exchange{
-			Name:   "binance",
-			Config: *config,
-		},
-		client: binance.NewClient(config.APIKEY, config.APISecret),
-	}
-	for _, opt := range opts {
-		opt(b)
+		Exchange: ex,
+		client:   binance.NewClient(config.APIKEY, config.APISecret),
 	}
 	return b
 }
