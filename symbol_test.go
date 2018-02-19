@@ -147,3 +147,73 @@ func TestSymbol_Reverse(t *testing.T) {
 		})
 	}
 }
+
+func TestSymbolSet(t *testing.T) {
+	type args struct {
+		data Symbols
+	}
+	tests := []struct {
+		name string
+		args args
+		want Symbols
+	}{
+		{
+			name: "nil symbols",
+			args: args{
+				data: nil,
+			},
+			want: nil,
+		},
+		{
+			name: "empty symbols",
+			args: args{
+				data: Symbols{},
+			},
+			want: Symbols{},
+		},
+		{
+			name: "non empty duplicate symbols",
+			args: args{
+				data: Symbols{
+					NewSymbol("BTC", "USD"),
+					NewSymbol("BTC", "USD"),
+				},
+			},
+			want: Symbols{
+				NewSymbol("BTC", "USD"),
+			},
+		},
+		{
+			name: "non empty symbols",
+			args: args{
+				data: Symbols{
+					NewSymbol("BTC", "USD"),
+				},
+			},
+			want: Symbols{
+				NewSymbol("BTC", "USD"),
+			},
+		},
+		{
+			name: "non empty unique symbols",
+			args: args{
+				data: Symbols{
+					NewSymbol("BTC", "USD"),
+					NewSymbol("ETH", "USD"),
+				},
+			},
+			want: Symbols{
+				NewSymbol("BTC", "USD"),
+				NewSymbol("ETH", "USD"),
+			},
+		},
+		// TODO: Add test cases.
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := SymbolSet(tt.args.data); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("SymbolSet() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}

@@ -1,5 +1,11 @@
 package cxtgo
 
+import (
+	"sort"
+
+	"github.com/xtgo/set"
+)
+
 // Symbol represents a combination of two currencies (BTCUSD)
 // this type is immutable
 type Symbol struct {
@@ -48,6 +54,13 @@ func NewSymbol(from, to string, delim ...string) Symbol {
 		first:  from,
 		second: to,
 	}
+}
+
+// SymbolSet returns Symbols with the duplicates removed
+func SymbolSet(data Symbols) Symbols {
+	sort.Sort(data)
+	n := set.Uniq(data)
+	return data[:n]
 }
 
 // Symbols is a container type for multiple symbols
