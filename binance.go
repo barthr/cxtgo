@@ -60,7 +60,7 @@ func (b *Binance) FetchTickers(ctx context.Context) (Response, error) {
 	panic("not implemented")
 }
 
-func (b *Binance) FetchOrderBook(ctx context.Context) (Response, error) {
+func (b *Binance) FetchOrderBook(ctx context.Context) (OrderBookResponse, error) {
 	panic("not implemented")
 }
 

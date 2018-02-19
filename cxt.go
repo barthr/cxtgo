@@ -1,6 +1,8 @@
 package cxtgo
 
-import "context"
+import (
+	"context"
+)
 
 // Compile time helpers to check if the implementation implement the desired interfaces
 var (
@@ -23,7 +25,7 @@ type PublicExchange interface {
 	FetchMarkets(ctx context.Context) (Response, error)
 	FetchTicker(ctx context.Context) (Response, error)
 	FetchTickers(ctx context.Context) (Response, error)
-	FetchOrderBook(ctx context.Context) (Response, error)
+	FetchOrderBook(ctx context.Context) (OrderBookResponse, error)
 	FetchOHLCV(ctx context.Context) (Response, error)
 	FetchTrades(ctx context.Context) (Response, error)
 }
