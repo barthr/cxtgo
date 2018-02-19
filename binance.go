@@ -2,22 +2,10 @@ package cxtgo
 
 import (
 	"context"
-	"net/http"
 
 	binance "github.com/adshao/go-binance"
 	"github.com/barthr/cxtgo/base"
 )
-
-// BinanceWithHTTPClient sets the http client for binance to use
-func BinanceWithHTTPClient(client *http.Client) func(*Binance) {
-	return func(b *Binance) {
-		b.client.HTTPClient = client
-	}
-}
-
-// BinanceOptFunc is the option function for binance
-// This can be used to define settings for the binance exchange
-type BinanceOptFunc func(*Binance)
 
 // Binance is the binance implementation for cxtgo interface
 type Binance struct {
