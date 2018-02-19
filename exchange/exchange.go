@@ -1,9 +1,5 @@
 package exchange
 
-import (
-	"time"
-)
-
 // Opt mutates the settings for the exchange
 type Opt func(*Base)
 
@@ -67,8 +63,9 @@ func WithCountries(countries ...string) Opt {
 // NewBase returns a new base exchange with the given opts applied
 func NewBase(opts ...Opt) *Base {
 	b := &Base{
-		ID:   "unknown",
-		Name: "unnamed exchange",
+		ID:     "unknown",
+		Name:   "unnamed exchange",
+		Market: map[Symbol]MarketInfo{},
 	}
 	for _, opt := range opts {
 		opt(b)
@@ -78,16 +75,14 @@ func NewBase(opts ...Opt) *Base {
 
 // Base is the base information and methods for an exchange
 type Base struct {
-	ID         string
-	Name       string
-	Version    string
-	UserAgent  string
-	APIKEY     string
-	APISecret  string
-	Countries  []string
-	URLs       map[string]string
-	Has        map[string]bool
-	TimeFrames map[string]time.Duration
-	Market     map[string]MarketInfo
-	RateLimit  time.Duration
+	ID        string
+	Name      string
+	Version   string
+	UserAgent string
+	APIKEY    string
+	APISecret string
+	Countries []string
+	URLs      map[string]string
+	Has       map[string]bool
+	Market    map[Symbol]MarketInfo
 }

@@ -8,7 +8,7 @@ import (
 
 // Compile time helpers to check if the implementation implement the desired interfaces
 var (
-	_ = (FullExchange)(&Binance{})
+// _ = (FullExchange)(&Binance{})
 )
 
 // Lotter is the interface for converting amounts to lot sizes

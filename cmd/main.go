@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/barthr/cxtgo"
@@ -14,5 +15,11 @@ func main() {
 		exchange.WithCountries("bart"),
 	)
 
-	fmt.Println(binance.Info().Countries)
+	market, err := binance.LoadMarkets(context.Background())
+
+	switch err.(type) {
+	case cxtgo.NetworkError:
+		fmt.Println("network error")
+	}
+	fmt.Println(market)
 }
