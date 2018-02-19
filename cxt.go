@@ -14,25 +14,25 @@ type Response struct {
 
 // PublicExchange are the public available calls for an exchange
 type PublicExchange interface {
-	LoadMarkets(ctx context.Context) Response
-	FetchMarkets(ctx context.Context) Response
-	FetchTicker(ctx context.Context) Response
-	FetchTickers(ctx context.Context) Response
-	FetchOrderBook(ctx context.Context) Response
-	FetchOHLCV(ctx context.Context) Response
-	FetchTrades(ctx context.Context) Response
+	LoadMarkets(ctx context.Context) (Response, error)
+	FetchMarkets(ctx context.Context) (Response, error)
+	FetchTicker(ctx context.Context) (Response, error)
+	FetchTickers(ctx context.Context) (Response, error)
+	FetchOrderBook(ctx context.Context) (Response, error)
+	FetchOHLCV(ctx context.Context) (Response, error)
+	FetchTrades(ctx context.Context) (Response, error)
 }
 
 // PrivateExchange are the private available calls for an exchange
 type PrivateExchange interface {
-	FetchBalance(ctx context.Context) Response
-	CreateOrder(ctx context.Context) Response
-	CancelOrder(ctx context.Context) Response
-	FetchOrder(ctx context.Context) Response
-	FetchOrders(ctx context.Context) Response
-	FetchOpenOrders(ctx context.Context) Response
-	FetchClosedOrders(ctx context.Context) Response
-	FetchMyTrades(ctx context.Context) Response
-	Deposit(ctx context.Context) Response
-	Withdraw(ctx context.Context) Response
+	FetchBalance(ctx context.Context) (Response, error)
+	CreateOrder(ctx context.Context) (Response, error)
+	CancelOrder(ctx context.Context) (Response, error)
+	FetchOrder(ctx context.Context) (Response, error)
+	FetchOrders(ctx context.Context) (Response, error)
+	FetchOpenOrders(ctx context.Context) (Response, error)
+	FetchClosedOrders(ctx context.Context) (Response, error)
+	FetchMyTrades(ctx context.Context) (Response, error)
+	Deposit(ctx context.Context) (Response, error)
+	Withdraw(ctx context.Context) (Response, error)
 }
