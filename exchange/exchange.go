@@ -25,13 +25,6 @@ func WithID(id string) Opt {
 	}
 }
 
-// WithVersion sets the version for the exchange
-func WithVersion(version string) Opt {
-	return func(b *Base) {
-		b.Version = version
-	}
-}
-
 // WithUserAgent sets the user agent for the exchange
 func WithUserAgent(userAgent string) Opt {
 	return func(b *Base) {
@@ -77,12 +70,10 @@ func NewBase(opts ...Opt) *Base {
 type Base struct {
 	ID        string
 	Name      string
-	Version   string
 	UserAgent string
 	APIKEY    string
 	APISecret string
 	Countries []string
 	URLs      map[string]string
-	Has       map[string]bool
 	Market    map[Symbol]MarketInfo
 }

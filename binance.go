@@ -26,7 +26,6 @@ func NewBinance(opts ...exchange.Opt) *Binance {
 	binanceOpts := []exchange.Opt{
 		exchange.WithName("Binance"),
 		exchange.WithUserAgent("cxt/0.1"),
-		exchange.WithVersion("v3"),
 	}
 	binanceOpts = append(binanceOpts, opts...)
 
