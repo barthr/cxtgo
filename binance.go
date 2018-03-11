@@ -2,6 +2,8 @@ package cxtgo
 
 import (
 	"context"
+	"encoding/json"
+	"io/ioutil"
 	"strconv"
 	"strings"
 
@@ -15,6 +17,7 @@ const binanceReqPerMin = 1200
 
 // Binance is the binance implementation for cxtgo interface
 type Binance struct {
+	test   bool
 	base   *exchange.Base
 	client *binance.Client
 
@@ -44,9 +47,24 @@ func (b *Binance) Info() exchange.Base {
 
 func (b *Binance) LoadMarkets(ctx context.Context) (map[exchange.Symbol]exchange.MarketInfo, error) {
 	b.rl.Take()
-	info, err := b.client.NewExchangeInfoService().Do(ctx)
-	if err != nil {
-		return nil, NetworkError{ExchangeError{"binance", err}}
+
+	var info *binance.ExchangeInfo
+	// do not call the client function but use test figures instead
+	if b.test {
+		response, err := ioutil.ReadFile("./figures/binance/exchange_info.json")
+
+		if err != nil {
+			return nil, NetworkError{ExchangeError{"binance", err}}
+		}
+		if err := json.Unmarshal(response, &info); err != nil {
+			return nil, ConversionError{ExchangeError{"binance", err}}
+		}
+	} else {
+		var err error
+		info, err = b.client.NewExchangeInfoService().Do(ctx)
+		if err != nil {
+			return nil, NetworkError{ExchangeError{"binance", err}}
+		}
 	}
 
 	marketInfos := map[exchange.Symbol]exchange.MarketInfo{}

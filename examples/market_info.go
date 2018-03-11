@@ -12,7 +12,6 @@ func main() {
 	binance := cxtgo.NewBinance(
 		exchange.WithAPIKey("test"),
 		exchange.WithAPISecret("test"),
-		exchange.WithCountries("bart"),
 	)
 
 	market, err := binance.LoadMarkets(context.Background())

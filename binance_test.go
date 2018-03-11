@@ -1,75 +1,51 @@
 package cxtgo
 
-// func TestNewBinance(t *testing.T) {
-// 	type args struct {
-// 		config *exchange.Config
-// 		opts   []
-// 	}
-// 	tests := []struct {
-// 		name string
-// 		args args
-// 		want *Binance
-// 	}{
-// 		{
-// 			name: "test with empty arguments",
-// 			args: args{
-// 				config: nil,
-// 				opts:   nil,
-// 			},
-// 			want: nil,
-// 		},
-// 		{
-// 			name: "test config arguments",
-// 			args: args{
-// 				config: &exchange.Config{
-// 					APISecret: "",
-// 					RateLimit: false,
-// 					Websocket: true,
-// 				},
-// 				opts: nil,
-// 			},
-// 			want: &Binance{
-// 				Exchange: &exchange.Exchange{
-// 					Name: "binance",
-// 					Config: exchange.Config{
-// 						APISecret: "",
-// 						RateLimit: false,
-// 						Websocket: true,
-// 					},
-// 				},
-// 				client: binance.NewClient("", ""),
-// 			},
-// 		},
-// 		{
-// 			name: "test with opts arguments",
-// 			args: args{
-// 				config: &exchange.Config{
-// 					APISecret: "",
-// 					RateLimit: false,
-// 					Websocket: true,
-// 				},
-// 				opts: []BinanceOptFunc{
-// 					BinanceWithHTTPClient(http.DefaultClient),
-// 				},
-// 			},
-// 			want: &Binance{
-// 				Exchange: &exchange.Exchange{
-// 					Name: "binance",
-// 					Config: exchange.Config{
-// 						APISecret: "",
-// 						RateLimit: false,
-// 						Websocket: true,
-// 					},
-// 				},
-// 				client: binance.NewClient("", ""),
-// 			},
-// 		},
-// 	}
-// 	for _, tt := range tests {
-// 		t.Run(tt.name, func(t *testing.T) {
-// 			if got := NewBinance(tt.args.config, tt.args.opts...); !reflect.DeepEqual(got, tt.want) {
-// 				t.Errorf("NewBinance() = %v, want %v", got, tt.want)
-// 			}
-// 		})
-// 	}
-// }
+import (
+	"context"
+	"testing"
+
+	"github.com/barthr/cxtgo/exchange"
+	"github.com/stretchr/testify/assert"
+)
+
+func TestBinance_LoadMarkets(t *testing.T) {
+	assert := assert.New(t)
+
+	binance := NewBinance()
+	binance.test = true
+	info, err := binance.LoadMarkets(context.Background())
+
+	assert.NoError(err, "err should be empty when loading markets")
+	assert.NotNil(info, "info should be filled when loading markets")
+	assert.Contains(info, exchange.NewSymbol("ETH", "BTC"), "info should contain eth btc")
+
+	assert.Equal(exchange.MarketInfo{
+		ID:     "ethbtc",
+		Base:   "ETH",
+		Quote:  "BTC",
+		Symbol: exchange.NewSymbol("ETH", "BTC"),
+		Maker:  0.001,
+		Taker:  0.001,
+		Active: true,
+		Precision: exchange.MarketPrecision{
+			Base:   8,
+			Quote:  8,
+			Price:  6,
+			Amount: 3,
+		},
+		Lot: 0.00100000,
+		Limits: exchange.MarketLimit{
+			Price: exchange.MinMax{
+				Min: 0.00000100,
+				Max: 100000.00000000,
+			},
+			Amount: exchange.MinMax{
+				Min: 0.00100000,
+				Max: 100000.00000000,
+			},
+			Cost: exchange.MinMax{
+				Min: 0.00100000,
+			},
+		},
+	}, info[exchange.NewSymbol("ETH", "BTC")], "given should be equal expected")
+}
