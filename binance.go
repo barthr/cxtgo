@@ -39,10 +39,12 @@ func NewBinance(opts ...exchange.Opt) *Binance {
 	return b
 }
 
+// Info returns the base info for the binance exchange
 func (b *Binance) Info() exchange.Base {
 	return *b.base
 }
 
+// LoadMarkets loads all the markets from binance
 func (b *Binance) LoadMarkets(ctx context.Context) (map[exchange.Symbol]exchange.MarketInfo, error) {
 	b.rl.Take()
 	info, err := b.client.NewExchangeInfoService().Do(ctx)
