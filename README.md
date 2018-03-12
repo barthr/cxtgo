@@ -1,6 +1,6 @@
 # Cxtgo : general interface to popular cryptocurrency exchanges
 
-## Overview [![GoDoc](https://godoc.org/github.com/barthr/cxtgo?status.svg)](https://godoc.org/github.com/barthr/cxtgo) [![Build Status](https://travis-ci.org/barthr/cxtgo.svg?branch=master)](https://travis-ci.org/barthr/cxtgo) [![Go Report Card](https://goreportcard.com/badge/github.com/barthr/cxtgo)](https://goreportcard.com/report/github.com/barthr/cxtgo) [![codecov](https://codecov.io/gh/barthr/cxtgo/branch/master/graph/badge.svg)](https://codecov.io/gh/barthr/cxtgo)
+## Overview [![GoDoc](https://godoc.org/github.com/barthr/cxtgo?status.svg)](https://godoc.org/github.com/barthr/cxtgo) [![Build Status](https://travis-ci.org/barthr/cxtgo.svg?branch=master)](https://travis-ci.org/barthr/cxtgo) [![Go Report Card](https://goreportcard.com/badge/github.com/barthr/cxtgo)](https://goreportcard.com/report/github.com/barthr/cxtgo) [![codecov](https://codecov.io/gh/barthr/cxtgo/branch/master/graph/badge.svg)](https://codecov.io/gh/barthr/cxtgo) [![HitCount](http://hits.dwyl.io/barthr/cxtgo.svg)](http://hits.dwyl.io/barthr/cxtgo)
 
 
 
