@@ -10,14 +10,6 @@ func WithName(name string) Opt {
 	}
 }
 
-// WithURLs sets the urls for the exchange
-// Valid urls are things like the documentation, website etc.
-func WithURLs(urls map[string]string) Opt {
-	return func(b *Base) {
-		b.URLs = urls
-	}
-}
-
 // WithID sets the id for the exchange
 func WithID(id string) Opt {
 	return func(b *Base) {
@@ -46,13 +38,6 @@ func WithAPISecret(secret string) Opt {
 	}
 }
 
-// WithCountries sets the api countries for the exchange
-func WithCountries(countries ...string) Opt {
-	return func(b *Base) {
-		b.Countries = countries
-	}
-}
-
 // NewBase returns a new base exchange with the given opts applied
 func NewBase(opts ...Opt) *Base {
 	b := &Base{
@@ -73,7 +58,5 @@ type Base struct {
 	UserAgent string
 	APIKEY    string
 	APISecret string
-	Countries []string
-	URLs      map[string]string
 	Market    map[Symbol]MarketInfo
 }
