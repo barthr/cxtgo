@@ -12,6 +12,14 @@ Cxtgo provides an general interface for popular cryptocurrency exchanges. It's i
 go get github.com/barthr/cxtgo
 ```
 
+## Supported exchanges
+
+This is very much a work in progress. The goal is to have the most popular 50 crypto exchanges included.
+
+| Exchange        | Implemented| Work in progess |
+| ------------- |---------------|----------------|
+| Binance      | No | Yes
+
 ## Contributing
 
 ToDo.
