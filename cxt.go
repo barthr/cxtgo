@@ -23,7 +23,7 @@ type Response struct {
 
 // PublicExchange are the public available calls for an exchange
 type PublicExchange interface {
-	LoadMarkets(ctx context.Context) (Response, error)
+	LoadMarkets(ctx context.Context) (map[exchange.Symbol]exchange.MarketInfo, error)
 	FetchMarkets(ctx context.Context) (Response, error)
 	FetchTicker(ctx context.Context) (Response, error)
 	FetchTickers(ctx context.Context) (Response, error)
