@@ -4,6 +4,7 @@ import (
 	"context"
 	"strconv"
 	"strings"
+	"sync"
 
 	"go.uber.org/ratelimit"
 
@@ -18,6 +19,7 @@ type Binance struct {
 	test   bool
 	base   *exchange.Base
 	client *binance.Client
+	once   *sync.Once
 
 	rl ratelimit.Limiter
 }
@@ -36,6 +38,7 @@ func NewBinance(opts ...exchange.Opt) *Binance {
 		client: binance.NewClient(ex.APIKEY, ex.APISecret),
 		rl:     ratelimit.New(binanceReqPerMin / 60),
 	}
+
 	return b
 }
 
@@ -115,74 +118,144 @@ func (b *Binance) LoadMarkets(ctx context.Context) (map[exchange.Symbol]exchange
 	for key, value := range marketInfos {
 		b.base.Market[key] = value
 	}
+	// Call dummy function so that once is triggered
+	b.once.Do(func() {})
 	return marketInfos, nil
 }
 
+func (b *Binance) initMarkets() error {
+	var err error
+	b.once.Do(func() {
+		_, err = b.LoadMarkets(context.Background())
+	})
+	return err
+}
+
 func (b *Binance) FetchMarkets(ctx context.Context) (Response, error) {
+	if err := b.initMarkets(); err != nil {
+		return Response{}, err
+	}
+	// If not called then call!
+
 	panic("not implemented")
 }
 
 func (b *Binance) FetchTicker(ctx context.Context) (Response, error) {
+	if err := b.initMarkets(); err != nil {
+		return Response{}, err
+	}
 	panic("not implemented")
 }
 
 func (b *Binance) FetchTickers(ctx context.Context) (Response, error) {
+	if err := b.initMarkets(); err != nil {
+		return Response{}, err
+	}
 	panic("not implemented")
 }
 
 func (b *Binance) FetchOrderBook(ctx context.Context) (Response, error) {
+	if err := b.initMarkets(); err != nil {
+		return Response{}, err
+	}
 	panic("not implemented")
 }
 
 func (b *Binance) FetchOHLCV(ctx context.Context) (Response, error) {
+	if err := b.initMarkets(); err != nil {
+		return Response{}, err
+	}
 	panic("not implemented")
 }
 
 func (b *Binance) FetchTrades(ctx context.Context) (Response, error) {
+	if err := b.initMarkets(); err != nil {
+		return Response{}, err
+	}
 	panic("not implemented")
 }
 
 func (b *Binance) FetchBalance(ctx context.Context) (Response, error) {
+	if err := b.initMarkets(); err != nil {
+		return Response{}, err
+	}
 	panic("not implemented")
 }
 
 func (b *Binance) CreateOrder(ctx context.Context) (Response, error) {
+	if err := b.initMarkets(); err != nil {
+		return Response{}, err
+	}
 	panic("not implemented")
 }
 
 func (b *Binance) CancelOrder(ctx context.Context) (Response, error) {
+	if err := b.initMarkets(); err != nil {
+		return Response{}, err
+	}
 	panic("not implemented")
 }
 
 func (b *Binance) CancelAllOrders(ctx context.Context) (Response, error) {
+	if err := b.initMarkets(); err != nil {
+		return Response{}, err
+	}
 	panic("not implemented")
 }
 
 func (b *Binance) FetchOrder(ctx context.Context) (Response, error) {
+	if err := b.initMarkets(); err != nil {
+		return Response{}, err
+	}
 	panic("not implemented")
 }
 
 func (b *Binance) FetchOrders(ctx context.Context) (Response, error) {
+	if err := b.initMarkets(); err != nil {
+		return Response{}, err
+	}
 	panic("not implemented")
 }
 
 func (b *Binance) FetchOpenOrders(ctx context.Context) (Response, error) {
+	if err := b.initMarkets(); err != nil {
+		return Response{}, err
+	}
 	panic("not implemented")
 }
 
 func (b *Binance) FetchClosedOrders(ctx context.Context) (Response, error) {
+	if err := b.initMarkets(); err != nil {
+		return Response{}, err
+	}
 	panic("not implemented")
 }
 
 func (b *Binance) FetchMyTrades(ctx context.Context) (Response, error) {
+	if err := b.initMarkets(); err != nil {
+		return Response{}, err
+	}
 	panic("not implemented")
 }
 
 func (b *Binance) Deposit(ctx context.Context) (Response, error) {
+	if err := b.initMarkets(); err != nil {
+		return Response{}, err
+	}
 	panic("not implemented")
 }
 
 func (b *Binance) Withdraw(ctx context.Context) (Response, error) {
+	if err := b.initMarkets(); err != nil {
+		return Response{}, err
+	}
+	panic("not implemented")
+}
+
+func (b *Binance) AmountToLots(value float64) float64 {
+	if err := b.initMarkets(); err != nil {
+		return .0
+	}
 	panic("not implemented")
 }
 
