@@ -36,6 +36,7 @@ func NewBinance(opts ...exchange.Opt) *Binance {
 	b := &Binance{
 		base:   ex,
 		client: binance.NewClient(ex.APIKEY, ex.APISecret),
+		once:   &sync.Once{},
 		rl:     ratelimit.New(binanceReqPerMin / 60),
 	}
 
