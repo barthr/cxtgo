@@ -48,18 +48,7 @@ func (b *Binance) Info() Base {
 }
 
 // LoadMarkets loads all the markets from binance
-func (b *Binance) LoadMarkets(ctx context.Context, reload ...bool) (map[Symbol]MarketInfo, error) {
-	reloadRequest := false
-	if len(reload) != 0 {
-		reloadRequest = reload[0]
-	}
-	if b.base.Market != nil && !reloadRequest {
-		marketInfos := map[Symbol]MarketInfo{}
-		for key, value := range b.base.Market {
-			marketInfos[key] = value
-		}
-		return marketInfos, nil
-	}
+func (b *Binance) LoadMarkets(ctx context.Context) (map[Symbol]MarketInfo, error) {
 	b.rl.Take()
 	info, err := b.client.NewExchangeInfoService().Do(ctx)
 	if err != nil {
