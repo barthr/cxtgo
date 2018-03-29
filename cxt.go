@@ -4,6 +4,11 @@ import (
 	"context"
 )
 
+const (
+	// Version indicates cxtgo version
+	Version = 0.1
+)
+
 // Compile time helpers to check if the implementation implement the desired interfaces
 var (
 // _ = (FullExchange)(&Binance{})
