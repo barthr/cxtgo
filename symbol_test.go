@@ -1,4 +1,4 @@
-package exchange
+package cxtgo
 
 import (
 	"reflect"
@@ -25,9 +25,9 @@ func TestNewSymbol(t *testing.T) {
 				delim: nil,
 			},
 			want: Symbol{
-				first:  "",
-				second: "",
-				delim:  "",
+				base:  "",
+				quote: "",
+				delim: "",
 			},
 			wantString: "",
 		},
@@ -39,9 +39,9 @@ func TestNewSymbol(t *testing.T) {
 				delim: nil,
 			},
 			want: Symbol{
-				first:  "BTC",
-				second: "USD",
-				delim:  "",
+				base:  "BTC",
+				quote: "USD",
+				delim: "",
 			},
 			wantString: "BTCUSD",
 		},
@@ -53,9 +53,9 @@ func TestNewSymbol(t *testing.T) {
 				delim: []string{"/"},
 			},
 			want: Symbol{
-				first:  "BTC",
-				second: "USD",
-				delim:  "/",
+				base:  "BTC",
+				quote: "USD",
+				delim: "/",
 			},
 			wantString: "BTC/USD",
 		},
@@ -67,9 +67,9 @@ func TestNewSymbol(t *testing.T) {
 				delim: []string{"/", "#"},
 			},
 			want: Symbol{
-				first:  "BTC",
-				second: "USD",
-				delim:  "/",
+				base:  "BTC",
+				quote: "USD",
+				delim: "/",
 			},
 			wantString: "BTC/USD",
 		},
@@ -102,9 +102,9 @@ func TestSymbol_Reverse(t *testing.T) {
 				delim:  "",
 			},
 			want: Symbol{
-				first:  "",
-				second: "",
-				delim:  "",
+				base:  "",
+				quote: "",
+				delim: "",
 			},
 		},
 		{
@@ -115,9 +115,9 @@ func TestSymbol_Reverse(t *testing.T) {
 				delim:  "",
 			},
 			want: Symbol{
-				first:  "USD",
-				second: "BTC",
-				delim:  "",
+				base:  "USD",
+				quote: "BTC",
+				delim: "",
 			},
 		},
 		{
@@ -128,18 +128,18 @@ func TestSymbol_Reverse(t *testing.T) {
 				delim:  "/",
 			},
 			want: Symbol{
-				first:  "USD",
-				second: "BTC",
-				delim:  "/",
+				base:  "USD",
+				quote: "BTC",
+				delim: "/",
 			},
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			p := Symbol{
-				delim:  tt.fields.delim,
-				first:  tt.fields.first,
-				second: tt.fields.second,
+				delim: tt.fields.delim,
+				base:  tt.fields.first,
+				quote: tt.fields.second,
 			}
 			if got := p.Reverse(); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("Symbol.Reverse() = %v, want %v", got, tt.want)

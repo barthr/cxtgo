@@ -1,4 +1,4 @@
-package exchange
+package cxtgo
 
 // MarketPrecision defines the precision for a given pair, how many decimals for the amount and prices
 type MarketPrecision struct {

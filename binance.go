@@ -9,7 +9,6 @@ import (
 	"go.uber.org/ratelimit"
 
 	binance "github.com/adshao/go-binance"
-	"github.com/barthr/cxtgo/exchange"
 )
 
 const binanceReqPerMin = 1200
@@ -17,7 +16,7 @@ const binanceReqPerMin = 1200
 // Binance is the binance implementation for cxtgo interface
 type Binance struct {
 	test   bool
-	base   *exchange.Base
+	base   *Base
 	client *binance.Client
 	once   *sync.Once
 
@@ -25,14 +24,14 @@ type Binance struct {
 }
 
 // NewBinance returns an instance of the binance exchange
-func NewBinance(opts ...exchange.Opt) *Binance {
-	binanceOpts := []exchange.Opt{
-		exchange.WithName("Binance"),
-		exchange.WithUserAgent("cxtgo/0.1"),
+func NewBinance(opts ...Opt) *Binance {
+	binanceOpts := []Opt{
+		WithName("Binance"),
+		WithUserAgent("cxtgo/0.1"),
 	}
 	binanceOpts = append(binanceOpts, opts...)
 
-	ex := exchange.NewBase(binanceOpts...)
+	ex := NewBase(binanceOpts...)
 	b := &Binance{
 		base:   ex,
 		client: binance.NewClient(ex.APIKEY, ex.APISecret),
@@ -44,21 +43,32 @@ func NewBinance(opts ...exchange.Opt) *Binance {
 }
 
 // Info returns the base info for the binance exchange
-func (b *Binance) Info() exchange.Base {
+func (b *Binance) Info() Base {
 	return *b.base
 }
 
 // LoadMarkets loads all the markets from binance
-func (b *Binance) LoadMarkets(ctx context.Context) (map[exchange.Symbol]exchange.MarketInfo, error) {
+func (b *Binance) LoadMarkets(ctx context.Context, reload ...bool) (map[Symbol]MarketInfo, error) {
+	reloadRequest := false
+	if len(reload) != 0 {
+		reloadRequest = reload[0]
+	}
+	if b.base.Market != nil && !reloadRequest {
+		marketInfos := map[Symbol]MarketInfo{}
+		for key, value := range b.base.Market {
+			marketInfos[key] = value
+		}
+		return marketInfos, nil
+	}
 	b.rl.Take()
 	info, err := b.client.NewExchangeInfoService().Do(ctx)
 	if err != nil {
 		return nil, NetworkError{ExchangeError{"binance", err}}
 	}
 
-	marketInfos := map[exchange.Symbol]exchange.MarketInfo{}
+	marketInfos := map[Symbol]MarketInfo{}
 	for _, symbol := range info.Symbols {
-		internalSymbol := exchange.NewSymbol(symbol.BaseAsset, symbol.QuoteAsset)
+		internalSymbol := NewSymbol(symbol.BaseAsset, symbol.QuoteAsset)
 
 		minPrice, err := strconv.ParseFloat(symbol.Filters[0]["minPrice"], 64)
 		if err != nil {
@@ -84,7 +94,7 @@ func (b *Binance) LoadMarkets(ctx context.Context) (map[exchange.Symbol]exchange
 		if err != nil {
 			return nil, ConversionError{ExchangeError{"binance", err}}
 		}
-		marketInfos[internalSymbol] = exchange.MarketInfo{
+		marketInfos[internalSymbol] = MarketInfo{
 			ID:     strings.ToLower(symbol.Symbol),
 			Base:   symbol.BaseAsset,
 			Quote:  symbol.QuoteAsset,
@@ -92,23 +102,23 @@ func (b *Binance) LoadMarkets(ctx context.Context) (map[exchange.Symbol]exchange
 			Maker:  0.001,
 			Taker:  0.001,
 			Active: true,
-			Precision: exchange.MarketPrecision{
+			Precision: MarketPrecision{
 				Base:   symbol.BaseAssetPrecision,
 				Quote:  symbol.QuotePrecision,
 				Price:  precisionFromString(symbol.Filters[0]["minPrice"], "."),
 				Amount: precisionFromString(symbol.Filters[1]["minQty"], "."),
 			},
 			Lot: lotSize,
-			Limits: exchange.MarketLimit{
-				Price: exchange.MinMax{
+			Limits: MarketLimit{
+				Price: MinMax{
 					Min: minPrice,
 					Max: maxPrice,
 				},
-				Amount: exchange.MinMax{
+				Amount: MinMax{
 					Min: minQty,
 					Max: maxQty,
 				},
-				Cost: exchange.MinMax{
+				Cost: MinMax{
 					Min: minNotional,
 				},
 			},

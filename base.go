@@ -1,4 +1,4 @@
-package exchange
+package cxtgo
 
 // Opt mutates the settings for the exchange
 type Opt func(*Base)

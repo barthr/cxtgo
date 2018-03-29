@@ -1,4 +1,4 @@
-package exchange
+package cxtgo
 
 import (
 	"reflect"
@@ -45,9 +45,7 @@ func TestWithOpts(t *testing.T) {
 				options: []Opt{
 					WithAPIKey("test"),
 					WithAPISecret("test"),
-					WithCountries("test"),
 					WithID("test"),
-					WithURLs(map[string]string{"doc": "test"}),
 					WithUserAgent("cxtgo"),
 					WithName("test"),
 				},
@@ -57,9 +55,7 @@ func TestWithOpts(t *testing.T) {
 				Name:      "test",
 				APIKEY:    "test",
 				APISecret: "test",
-				URLs:      map[string]string{"doc": "test"},
 				UserAgent: "cxtgo",
-				Countries: []string{"test"},
 				Market:    map[Symbol]MarketInfo{},
 			},
 		},
