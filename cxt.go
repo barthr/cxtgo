@@ -16,7 +16,7 @@ var (
 
 // Lotter is the interface for converting amounts to lot sizes
 type Lotter interface {
-	AmountToLots(float64) float64
+	AmountToLots(Symbol, float64) float64
 }
 
 // Response is the original response from the exchange api
@@ -55,9 +55,4 @@ type FullExchange interface {
 
 	PublicExchange
 	PrivateExchange
-}
-
-type MarketError struct {
-	Exchange string
-	Cause    error
 }
