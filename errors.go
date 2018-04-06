@@ -3,12 +3,12 @@ package cxtgo
 import "fmt"
 
 type ExchangeError struct {
-	exchange string
-	cause    error
+	Exchange string
+	Cause    error
 }
 
 func (ee ExchangeError) Error() string {
-	return fmt.Sprintf("[%s] failed because %v", ee.exchange, ee.cause)
+	return fmt.Sprintf("[%s] failed because %v", ee.Exchange, ee.Cause)
 }
 
 // NetworkError defines a network error from the exchange
