@@ -44,6 +44,7 @@ func (b *Binance) Info() cxtgo.Base {
 }
 
 func (b *Binance) Reset() {
+	b.once.Reset()
 }
 
 func (b *Binance) AmountToLots(value float64) float64 {
