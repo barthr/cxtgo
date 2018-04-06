@@ -2,10 +2,10 @@ package binance
 
 import (
 	"strings"
-	"sync"
 
 	binance "github.com/adshao/go-binance"
 	"github.com/barthr/cxtgo"
+	"github.com/barthr/cxtgo/resync"
 	"go.uber.org/ratelimit"
 )
 
@@ -14,18 +14,17 @@ const binanceReqPerMin = 1200
 // Binance is the binance implementation for cxtgo interface
 type Binance struct {
 	test   bool
-	base   *cxtgo.Base
+	base   cxtgo.Base
 	client *binance.Client
-	once   *sync.Once
-
-	rl ratelimit.Limiter
+	once   resync.Once
 }
 
-// NewBinance returns an instance of the binance exchange
-func NewBinance(opts ...cxtgo.Opt) *Binance {
+// New returns an instance of the binance exchange, with some defaults set.
+func New(opts ...cxtgo.Opt) *Binance {
 	binanceOpts := []cxtgo.Opt{
 		cxtgo.WithName("Binance"),
 		cxtgo.WithUserAgent("cxtgo/0.1"),
+		cxtgo.WithRatelimit(ratelimit.New(binanceReqPerMin / 60)),
 	}
 	binanceOpts = append(binanceOpts, opts...)
 
@@ -33,8 +32,7 @@ func NewBinance(opts ...cxtgo.Opt) *Binance {
 	b := &Binance{
 		base:   ex,
 		client: binance.NewClient(ex.APIKEY, ex.APISecret),
-		once:   &sync.Once{},
-		rl:     ratelimit.New(binanceReqPerMin / 60),
+		once:   resync.Once{},
 	}
 
 	return b
@@ -42,7 +40,10 @@ func NewBinance(opts ...cxtgo.Opt) *Binance {
 
 // Info returns the base info for the binance exchange
 func (b *Binance) Info() cxtgo.Base {
-	return *b.base
+	return b.base
+}
+
+func (b *Binance) Reset() {
 }
 
 func (b *Binance) AmountToLots(value float64) float64 {

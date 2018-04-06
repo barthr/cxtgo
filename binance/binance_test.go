@@ -11,7 +11,7 @@ import (
 func TestBinance_LoadMarkets(t *testing.T) {
 	assert := assert.New(t)
 
-	binance := NewBinance()
+	binance := New()
 	info, err := binance.LoadMarkets(context.Background())
 
 	assert.NoError(err, "err should be empty when loading markets")

@@ -5,10 +5,11 @@ import (
 	"fmt"
 
 	"github.com/barthr/cxtgo"
+	"github.com/barthr/cxtgo/binance"
 )
 
 func main() {
-	binance := cxtgo.NewBinance(
+	binance := binance.New(
 		cxtgo.WithAPIKey("test"),
 		cxtgo.WithAPISecret("test"),
 	)

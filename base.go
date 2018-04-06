@@ -1,5 +1,7 @@
 package cxtgo
 
+import "go.uber.org/ratelimit"
+
 // Opt mutates the settings for the exchange
 type Opt func(*Base)
 
@@ -7,6 +9,13 @@ type Opt func(*Base)
 func WithName(name string) Opt {
 	return func(b *Base) {
 		b.Name = name
+	}
+}
+
+// WithRatelimit sets a rate limit to use for the api calls to the exchange
+func WithRatelimit(rl ratelimit.Limiter) Opt {
+	return func(b *Base) {
+		b.Ratelimit = rl
 	}
 }
 
@@ -39,14 +48,14 @@ func WithAPISecret(secret string) Opt {
 }
 
 // NewBase returns a new base exchange with the given opts applied
-func NewBase(opts ...Opt) *Base {
-	b := &Base{
+func NewBase(opts ...Opt) Base {
+	b := Base{
 		ID:     "unknown",
 		Name:   "unnamed exchange",
 		Market: map[Symbol]MarketInfo{},
 	}
 	for _, opt := range opts {
-		opt(b)
+		opt(&b)
 	}
 	return b
 }
@@ -58,5 +67,6 @@ type Base struct {
 	UserAgent string
 	APIKEY    string
 	APISecret string
+	Ratelimit ratelimit.Limiter
 	Market    map[Symbol]MarketInfo
 }

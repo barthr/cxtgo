@@ -11,7 +11,7 @@ import (
 
 // LoadMarkets loads all the markets from binance
 func (b *Binance) LoadMarkets(ctx context.Context) (map[cxtgo.Symbol]cxtgo.MarketInfo, error) {
-	b.rl.Take()
+	b.base.Ratelimit.Take()
 	info, err := b.client.NewExchangeInfoService().Do(ctx)
 	if err != nil {
 		return nil, cxtgo.NetworkError{cxtgo.ExchangeError{"binance", err}}
