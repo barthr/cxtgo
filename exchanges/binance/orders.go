@@ -6,7 +6,14 @@ import (
 	"github.com/barthr/cxtgo"
 )
 
-func (b *Binance) CreateOrder(ctx context.Context) (cxtgo.Response, error) {
+func (b *Binance) LimitOrder(ctx context.Context) (cxtgo.Response, error) {
+	if err := b.initMarkets(); err != nil {
+		return cxtgo.Response{}, err
+	}
+	panic("not implemented")
+}
+
+func (b *Binance) MarketOrder(ctx context.Context) (cxtgo.Response, error) {
 	if err := b.initMarkets(); err != nil {
 		return cxtgo.Response{}, err
 	}

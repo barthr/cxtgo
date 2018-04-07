@@ -17,7 +17,7 @@ type Binance struct {
 	test   bool
 	base   cxtgo.Base
 	client *binance.Client
-	once   *resync.Once
+	once   resync.Once
 }
 
 // New returns an instance of the binance exchange, with some defaults set.
@@ -36,7 +36,7 @@ func New(opts ...cxtgo.Opt) *Binance {
 	b := &Binance{
 		base:   ex,
 		client: binance.NewClient(ex.APIKEY, ex.APISecret),
-		once:   &resync.Once{},
+		once:   resync.Once{},
 	}
 
 	return b
@@ -47,6 +47,7 @@ func (b *Binance) Info() cxtgo.Base {
 	return b.base
 }
 
+// Reset resets the resync.Once, this allows the exchange to reload the related symbol info.
 func (b *Binance) Reset() {
 	b.once.Reset()
 }

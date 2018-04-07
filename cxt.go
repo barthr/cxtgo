@@ -9,6 +9,9 @@ const (
 	Version = 0.1
 )
 
+// Params are additional parameters which can be send for specific options per exchange
+type Params map[string]interface{}
+
 // Lotter is the interface for converting amounts to lot sizes
 type Lotter interface {
 	AmountToLots(Symbol, float64) float64
@@ -39,7 +42,8 @@ type AccountAPI interface {
 
 // OrderAPI are all the calls for creating updating and fetching orders
 type OrderAPI interface {
-	CreateOrder(ctx context.Context) (Response, error)
+	LimitOrder(ctx context.Context, symbol Symbol, side Side, amount, price float64, params Params) (Response, error)
+	MarketOrder(ctx context.Context, symbol Symbol, side Side, amount, params Params) (Response, error)
 	CancelOrder(ctx context.Context) (Response, error)
 	Order(ctx context.Context) (Response, error)
 	Orders(ctx context.Context) (Response, error)

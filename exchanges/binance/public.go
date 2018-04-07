@@ -11,8 +11,8 @@ import (
 	"github.com/pkg/errors"
 )
 
-// LoadMarkets loads all the markets from binance
-func (b *Binance) LoadMarkets(ctx context.Context) (map[cxtgo.Symbol]cxtgo.MarketInfo, error) {
+// Markets loads all the markets from binance
+func (b *Binance) Markets(ctx context.Context) (map[cxtgo.Symbol]cxtgo.MarketInfo, error) {
 	b.base.Ratelimit.Take()
 	info, err := b.client.NewExchangeInfoService().Do(ctx)
 	if err != nil {
@@ -86,18 +86,9 @@ func (b *Binance) LoadMarkets(ctx context.Context) (map[cxtgo.Symbol]cxtgo.Marke
 func (b *Binance) initMarkets() error {
 	var err error
 	b.once.Do(func() {
-		_, err = b.LoadMarkets(context.Background())
+		_, err = b.Markets(context.Background())
 	})
 	return err
-}
-
-func (b *Binance) Markets(ctx context.Context) (cxtgo.Response, error) {
-	if err := b.initMarkets(); err != nil {
-		return cxtgo.Response{}, err
-	}
-	// If not called then call!
-
-	panic("not implemented")
 }
 
 func (b *Binance) Ticker(ctx context.Context) (cxtgo.Response, error) {
