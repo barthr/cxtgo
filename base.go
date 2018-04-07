@@ -9,6 +9,13 @@ import (
 // Opt mutates the settings for the exchange.
 type Opt func(*Base)
 
+// WithIncludeRaw sets the toggle to include the raw response from the exchange.
+func WithIncludeRaw(toggle bool) Opt {
+	return func(b *Base) {
+		b.Raw = toggle
+	}
+}
+
 // WithName sets the name for the exchange.
 func WithName(name string) Opt {
 	return func(b *Base) {
@@ -82,6 +89,7 @@ func NewBase(opts ...Opt) Base {
 type Base struct {
 	ID        string
 	Name      string
+	Raw       bool
 	Debug     bool
 	DebugLog  io.Writer
 	UserAgent string

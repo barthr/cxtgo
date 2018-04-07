@@ -18,7 +18,6 @@ func (b *Binance) Markets(ctx context.Context) (map[cxtgo.Symbol]cxtgo.MarketInf
 	if err != nil {
 		return nil, cxtgo.NetworkError{cxtgo.ExchangeError{"binance", err}}
 	}
-	raw, _ := json.Marshal(info)
 
 	marketInfos := map[cxtgo.Symbol]cxtgo.MarketInfo{}
 	for _, symbol := range info.Symbols {
@@ -73,7 +72,7 @@ func (b *Binance) Markets(ctx context.Context) (map[cxtgo.Symbol]cxtgo.MarketInf
 					Min: conversions[5],
 				},
 			},
-			Raw: raw,
+			Raw: b.raw(info),
 		}
 	}
 	// copy the map but return a unmodifiable version
@@ -81,6 +80,17 @@ func (b *Binance) Markets(ctx context.Context) (map[cxtgo.Symbol]cxtgo.MarketInf
 		b.base.Market[key] = value
 	}
 	return marketInfos, nil
+}
+
+func (b *Binance) raw(v interface{}) []byte {
+	if !b.base.Raw {
+		return nil
+	}
+	raw, err := json.Marshal(v)
+	if err != nil {
+		return nil
+	}
+	return raw
 }
 
 func (b *Binance) initMarkets() error {

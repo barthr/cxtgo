@@ -7,6 +7,7 @@ import (
 	"github.com/barthr/cxtgo"
 	"github.com/barthr/cxtgo/resync"
 	"github.com/myesui/uuid"
+	"github.com/pkg/errors"
 	"go.uber.org/ratelimit"
 )
 
@@ -27,7 +28,6 @@ func New(opts ...cxtgo.Opt) *Binance {
 		cxtgo.WithName("Binance"),
 		cxtgo.WithUserAgent("cxtgo/0.1"),
 		cxtgo.WithRatelimit(ratelimit.New(binanceReqPerMin / 60)),
-		cxtgo.WithDebug(false),
 		cxtgo.WithDebuglogger(os.Stdout),
 	}
 	binanceOpts = append(binanceOpts, opts...)
@@ -54,15 +54,15 @@ func (b *Binance) Reset() {
 
 // AmountToLots converts the given amount to the lot sized amount.
 // Returns the zero value of float64 when the symbol is not found in the marketinfo.
-func (b *Binance) AmountToLots(s cxtgo.Symbol, amount float64) float64 {
+func (b *Binance) AmountToLots(s cxtgo.Symbol, amount float64) (float64, error) {
 	if err := b.initMarkets(); err != nil {
-		return .0
+		return 0, errors.WithStack(err)
 	}
 	info, ok := b.base.Market[s]
 	if !ok {
-		return .0
+		return 0, errors.New("symbol not found")
 	}
-	return binance.AmountToLotSize(info.Lot, info.Precision.Amount, amount)
+	return binance.AmountToLotSize(info.Lot, info.Precision.Amount, amount), nil
 }
 
 type binanceAdapter struct {

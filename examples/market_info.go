@@ -21,5 +21,6 @@ func main() {
 		fmt.Println("network error")
 	}
 	info := market[cxtgo.NewSymbol("ETH", "BTC")]
-	fmt.Printf("%#v\n", info)
+	fmt.Printf("%v\n", info.Precision.Amount)
+
 }
