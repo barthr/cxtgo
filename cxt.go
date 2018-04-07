@@ -40,7 +40,7 @@ type AccountAPI interface {
 // OrderAPI are all the calls for creating updating and fetching orders
 type OrderAPI interface {
 	LimitOrder(ctx context.Context, symbol Symbol, side Side, amount, price float64, params Params) (Response, error)
-	MarketOrder(ctx context.Context, symbol Symbol, side Side, amount, params Params) (Response, error)
+	MarketOrder(ctx context.Context, symbol Symbol, side Side, amount float64, params Params) (Response, error)
 	CancelOrder(ctx context.Context) (Response, error)
 	Order(ctx context.Context) (Response, error)
 	Orders(ctx context.Context) (Response, error)
