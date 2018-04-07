@@ -17,7 +17,7 @@ type Binance struct {
 	test   bool
 	base   cxtgo.Base
 	client *binance.Client
-	once   resync.Once
+	once   *resync.Once
 }
 
 // New returns an instance of the binance exchange, with some defaults set.
@@ -36,7 +36,7 @@ func New(opts ...cxtgo.Opt) *Binance {
 	b := &Binance{
 		base:   ex,
 		client: binance.NewClient(ex.APIKEY, ex.APISecret),
-		once:   resync.Once{},
+		once:   &resync.Once{},
 	}
 
 	return b
@@ -51,11 +51,17 @@ func (b *Binance) Reset() {
 	b.once.Reset()
 }
 
-func (b *Binance) AmountToLots(value float64) float64 {
+// AmountToLots converts the given amount to the lot sized amount.
+// Returns the zero value of float64 when the symbol is not found in the marketinfo.
+func (b *Binance) AmountToLots(s cxtgo.Symbol, amount float64) float64 {
 	if err := b.initMarkets(); err != nil {
 		return .0
 	}
-	panic("not implemented")
+	info, ok := b.base.Market[s]
+	if !ok {
+		return .0
+	}
+	return binance.AmountToLotSize(info.Lot, info.Precision.Amount, amount)
 }
 
 type binanceAdapter struct {

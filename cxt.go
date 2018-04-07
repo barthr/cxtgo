@@ -31,8 +31,8 @@ type PublicAPI interface {
 
 // AccountAPI are the private user api calls for an exchange
 type AccountAPI interface {
-	FetchBalance(ctx context.Context) (Response, error)
-	FetchMyTrades(ctx context.Context) (Response, error)
+	Balance(ctx context.Context) (Response, error)
+	MyTrades(ctx context.Context) (Response, error)
 	Deposit(ctx context.Context) (Response, error)
 	Withdraw(ctx context.Context) (Response, error)
 }

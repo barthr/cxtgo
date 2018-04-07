@@ -2,6 +2,7 @@ package binance
 
 import (
 	"context"
+	"encoding/json"
 	"strconv"
 	"strings"
 
@@ -17,6 +18,7 @@ func (b *Binance) LoadMarkets(ctx context.Context) (map[cxtgo.Symbol]cxtgo.Marke
 	if err != nil {
 		return nil, cxtgo.NetworkError{cxtgo.ExchangeError{"binance", err}}
 	}
+	raw, _ := json.Marshal(info)
 
 	marketInfos := map[cxtgo.Symbol]cxtgo.MarketInfo{}
 	for _, symbol := range info.Symbols {
@@ -71,15 +73,13 @@ func (b *Binance) LoadMarkets(ctx context.Context) (map[cxtgo.Symbol]cxtgo.Marke
 					Min: conversions[5],
 				},
 			},
-			// todo raw
+			Raw: raw,
 		}
 	}
 	// copy the map but return a unmodifiable version
 	for key, value := range marketInfos {
 		b.base.Market[key] = value
 	}
-	// Call dummy function so that once is triggered
-	b.once.Do(func() {})
 	return marketInfos, nil
 }
 
@@ -91,7 +91,7 @@ func (b *Binance) initMarkets() error {
 	return err
 }
 
-func (b *Binance) FetchMarkets(ctx context.Context) (cxtgo.Response, error) {
+func (b *Binance) Markets(ctx context.Context) (cxtgo.Response, error) {
 	if err := b.initMarkets(); err != nil {
 		return cxtgo.Response{}, err
 	}
@@ -100,35 +100,35 @@ func (b *Binance) FetchMarkets(ctx context.Context) (cxtgo.Response, error) {
 	panic("not implemented")
 }
 
-func (b *Binance) FetchTicker(ctx context.Context) (cxtgo.Response, error) {
+func (b *Binance) Ticker(ctx context.Context) (cxtgo.Response, error) {
 	if err := b.initMarkets(); err != nil {
 		return cxtgo.Response{}, err
 	}
 	panic("not implemented")
 }
 
-func (b *Binance) FetchTickers(ctx context.Context) (cxtgo.Response, error) {
+func (b *Binance) Tickers(ctx context.Context) (cxtgo.Response, error) {
 	if err := b.initMarkets(); err != nil {
 		return cxtgo.Response{}, err
 	}
 	panic("not implemented")
 }
 
-func (b *Binance) FetchOrderBook(ctx context.Context) (cxtgo.Response, error) {
+func (b *Binance) OrderBook(ctx context.Context) (cxtgo.Response, error) {
 	if err := b.initMarkets(); err != nil {
 		return cxtgo.Response{}, err
 	}
 	panic("not implemented")
 }
 
-func (b *Binance) FetchOHLCV(ctx context.Context) (cxtgo.Response, error) {
+func (b *Binance) OHLCV(ctx context.Context) (cxtgo.Response, error) {
 	if err := b.initMarkets(); err != nil {
 		return cxtgo.Response{}, err
 	}
 	panic("not implemented")
 }
 
-func (b *Binance) FetchTrades(ctx context.Context) (cxtgo.Response, error) {
+func (b *Binance) Trades(ctx context.Context) (cxtgo.Response, error) {
 	if err := b.initMarkets(); err != nil {
 		return cxtgo.Response{}, err
 	}
