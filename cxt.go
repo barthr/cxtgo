@@ -9,11 +9,6 @@ const (
 	Version = 0.1
 )
 
-// Compile time helpers to check if the implementation implement the desired interfaces
-var (
-// _ = (FullExchange)(&Binance{})
-)
-
 // Lotter is the interface for converting amounts to lot sizes
 type Lotter interface {
 	AmountToLots(Symbol, float64) float64
@@ -24,35 +19,40 @@ type Response struct {
 	Original []byte
 }
 
-// PublicExchange are the public available calls for an exchange
-type PublicExchange interface {
-	LoadMarkets(ctx context.Context) (map[Symbol]MarketInfo, error)
-	FetchMarkets(ctx context.Context) (Response, error)
-	FetchTicker(ctx context.Context) (Response, error)
-	FetchTickers(ctx context.Context) (Response, error)
-	FetchOrderBook(ctx context.Context) (Response, error)
-	FetchOHLCV(ctx context.Context) (Response, error)
-	FetchTrades(ctx context.Context) (Response, error)
+// PublicAPI are the public available calls for an exchange
+type PublicAPI interface {
+	Markets(ctx context.Context) (map[Symbol]MarketInfo, error)
+	Ticker(ctx context.Context) (Response, error)
+	Tickers(ctx context.Context) (Response, error)
+	OrderBook(ctx context.Context) (OrderBook, error)
+	OHLCV(ctx context.Context) (Response, error)
+	Trades(ctx context.Context) (Response, error)
 }
 
-// PrivateExchange are the private available calls for an exchange
-type PrivateExchange interface {
+// UserAPI are the private user api calls for an exchange
+type UserAPI interface {
 	FetchBalance(ctx context.Context) (Response, error)
-	CreateOrder(ctx context.Context) (Response, error)
-	CancelOrder(ctx context.Context) (Response, error)
-	FetchOrder(ctx context.Context) (Response, error)
-	FetchOrders(ctx context.Context) (Response, error)
-	FetchOpenOrders(ctx context.Context) (Response, error)
-	FetchClosedOrders(ctx context.Context) (Response, error)
 	FetchMyTrades(ctx context.Context) (Response, error)
 	Deposit(ctx context.Context) (Response, error)
 	Withdraw(ctx context.Context) (Response, error)
 }
 
-type FullExchange interface {
+// OrderAPI are all the calls for creating updating and fetching orders
+type OrderAPI interface {
+	CreateOrder(ctx context.Context) (Response, error)
+	CancelOrder(ctx context.Context) (Response, error)
+	Order(ctx context.Context) (Response, error)
+	Orders(ctx context.Context) (Response, error)
+	OpenOrders(ctx context.Context) (Response, error)
+	ClosedOrders(ctx context.Context) (Response, error)
+}
+
+// Exchange defines all the api calls for an exchange
+type Exchange interface {
 	Info() Base
 	Reset()
 
-	PublicExchange
-	PrivateExchange
+	PublicAPI
+	UserAPI
+	OrderAPI
 }
