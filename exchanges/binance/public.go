@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/barthr/cxtgo"
+	"github.com/barthr/cxtgo/precision"
 	"github.com/pkg/errors"
 )
 
@@ -53,8 +54,8 @@ func (b *Binance) LoadMarkets(ctx context.Context) (map[cxtgo.Symbol]cxtgo.Marke
 			Precision: cxtgo.MarketPrecision{
 				Base:   symbol.BaseAssetPrecision,
 				Quote:  symbol.QuotePrecision,
-				Price:  precisionFromString(symbol.Filters[0]["minPrice"], "."),
-				Amount: precisionFromString(symbol.Filters[1]["minQty"], "."),
+				Price:  precision.FromString(symbol.Filters[0]["minPrice"], "."),
+				Amount: precision.FromString(symbol.Filters[1]["minQty"], "."),
 			},
 			Lot: conversions[2],
 			Limits: cxtgo.MarketLimit{

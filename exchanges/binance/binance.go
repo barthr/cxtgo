@@ -1,7 +1,7 @@
 package binance
 
 import (
-	"strings"
+	"os"
 
 	binance "github.com/adshao/go-binance"
 	"github.com/barthr/cxtgo"
@@ -25,6 +25,8 @@ func New(opts ...cxtgo.Opt) *Binance {
 		cxtgo.WithName("Binance"),
 		cxtgo.WithUserAgent("cxtgo/0.1"),
 		cxtgo.WithRatelimit(ratelimit.New(binanceReqPerMin / 60)),
+		cxtgo.WithDebug(false),
+		cxtgo.WithDebuglogger(os.Stdout),
 	}
 	binanceOpts = append(binanceOpts, opts...)
 
@@ -52,19 +54,4 @@ func (b *Binance) AmountToLots(value float64) float64 {
 		return .0
 	}
 	panic("not implemented")
-}
-
-func precisionFromString(input string, splitter string) int {
-	parts := strings.Split(input, splitter)
-	pricePrecision := 0
-	if len(parts) != 2 {
-		return 0
-	}
-	for _, item := range parts[1] {
-		pricePrecision++
-		if item != '0' {
-			break
-		}
-	}
-	return pricePrecision
 }

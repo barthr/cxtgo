@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"github.com/barthr/cxtgo"
-	"github.com/barthr/cxtgo/binance"
+	"github.com/barthr/cxtgo/exchanges/binance"
 )
 
 func main() {
