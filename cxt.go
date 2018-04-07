@@ -29,8 +29,8 @@ type PublicAPI interface {
 	Trades(ctx context.Context) (Response, error)
 }
 
-// UserAPI are the private user api calls for an exchange
-type UserAPI interface {
+// AccountAPI are the private user api calls for an exchange
+type AccountAPI interface {
 	FetchBalance(ctx context.Context) (Response, error)
 	FetchMyTrades(ctx context.Context) (Response, error)
 	Deposit(ctx context.Context) (Response, error)
@@ -53,6 +53,6 @@ type Exchange interface {
 	Reset()
 
 	PublicAPI
-	UserAPI
+	AccountAPI
 	OrderAPI
 }
