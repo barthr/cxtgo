@@ -27,7 +27,7 @@ type PublicAPI interface {
 	Markets(ctx context.Context) (map[Symbol]MarketInfo, error)
 	Ticker(ctx context.Context) (Response, error)
 	Tickers(ctx context.Context) (Response, error)
-	OrderBook(ctx context.Context) (Orderbook, error)
+	OrderBook(ctx context.Context, symbol Symbol) (Orderbook, error)
 	OHLCV(ctx context.Context) (Response, error)
 	Trades(ctx context.Context) (Response, error)
 }
