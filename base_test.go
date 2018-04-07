@@ -12,14 +12,14 @@ func TestWithOpts(t *testing.T) {
 	tests := []struct {
 		name string
 		args args
-		want *Base
+		want Base
 	}{
 		{
 			name: "empty options",
 			args: args{
 				options: nil,
 			},
-			want: &Base{
+			want: Base{
 				ID:     "unknown",
 				Name:   "unnamed exchange",
 				Market: map[Symbol]MarketInfo{},
@@ -32,7 +32,7 @@ func TestWithOpts(t *testing.T) {
 					WithAPIKey("test"),
 				},
 			},
-			want: &Base{
+			want: Base{
 				ID:     "unknown",
 				Name:   "unnamed exchange",
 				APIKEY: "test",
@@ -50,7 +50,7 @@ func TestWithOpts(t *testing.T) {
 					WithName("test"),
 				},
 			},
-			want: &Base{
+			want: Base{
 				ID:        "test",
 				Name:      "test",
 				APIKEY:    "test",
