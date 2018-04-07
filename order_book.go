@@ -22,6 +22,7 @@ type Orderbook interface {
 	Head(n int) Summary
 	Spread() float64
 	Depth() Summary
+	Error() error
 }
 
 // Summary defines a view of the order book.

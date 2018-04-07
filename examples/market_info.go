@@ -14,7 +14,7 @@ func main() {
 		cxtgo.WithAPISecret("test"),
 	)
 
-	market, err := binance.LoadMarkets(context.Background())
+	market, err := binance.Markets(context.Background())
 
 	switch err.(type) {
 	case cxtgo.NetworkError:
