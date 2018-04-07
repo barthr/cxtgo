@@ -32,6 +32,12 @@
   version = "v1.2.0"
 
 [[projects]]
+  name = "github.com/myesui/uuid"
+  packages = ["."]
+  revision = "835a10bbd6bce40820349a68b1368a62c3c5617c"
+  version = "v1.0.0"
+
+[[projects]]
   name = "github.com/pkg/errors"
   packages = ["."]
   revision = "645ef00459ed84a119197bfb8d8205042c6df63d"
@@ -61,6 +67,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "c3a91791a2bc82a3319c6e0f97e3603ec0f5ce5f624e6136fd7e17e530f3ce5d"
+  inputs-digest = "2b7852b11f37c94b6dbcb65771982b96f3a1ece2afabafcc2c05237e31236288"
   solver-name = "gps-cdcl"
   solver-version = 1
