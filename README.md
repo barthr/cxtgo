@@ -4,8 +4,9 @@
 
 
 
-Cxtgo provides an general interface for popular cryptocurrency exchanges. It's inspired by https://www.ccxt.trade library but with a more idiomatic interface. Cxtgo primary focus is based on websockets and performance, making it very suitable for high frequency trading algorithms.
+Cxtgo provides an general interface for popular cryptocurrency exchanges. It's inspired by https://www.ccxt.trade library but with a more idiomatic interface for go. Cxtgo primary focus is based on performance, making it very suitable for high frequency trading algorithms.
 
+The goal is to keep the api as simple as possible and to adapt every exchange to this generic interface and types.
 ## Install
 
 ```
@@ -18,7 +19,9 @@ This is very much a work in progress. The goal is to have the most popular 50 cr
 
 | Exchange        | Implemented| Work in progess |
 | ------------- |---------------|----------------|
-| Binance      | No | Yes
+| Binance      | No | Yes |
+| Bitfinex     | No | Yes |
+| Bitmex       | No | Yes |
 
 ## Contributing
 

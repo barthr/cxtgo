@@ -4,9 +4,6 @@ go:
   - 1.9
   - master
 
-before_install:
-  - go get -t -v ./...
-
 script:
   - sh go-test.sh 
 

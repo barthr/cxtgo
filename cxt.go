@@ -40,7 +40,6 @@ type PrivateExchange interface {
 	FetchBalance(ctx context.Context) (Response, error)
 	CreateOrder(ctx context.Context) (Response, error)
 	CancelOrder(ctx context.Context) (Response, error)
-	CancelAllOrders(ctx context.Context) (Response, error)
 	FetchOrder(ctx context.Context) (Response, error)
 	FetchOrders(ctx context.Context) (Response, error)
 	FetchOpenOrders(ctx context.Context) (Response, error)
