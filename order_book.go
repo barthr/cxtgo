@@ -4,17 +4,17 @@ import (
 	"sync"
 )
 
-// Offer defines an offer from the order book
-type Offer struct {
+// BookOrder defines an offer from the order book
+type BookOrder struct {
 	Price    float64
 	Quantity float64
 }
 
 // Bid represents a bid offer from the order book
-type Bid Offer
+type Bid BookOrder
 
 // Ask represents an ask offer from the order book
-type Ask Offer
+type Ask BookOrder
 
 // Orderbook is a definition for an orderbook
 type Orderbook interface {
