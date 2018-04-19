@@ -1,6 +1,4 @@
-<p align="center"><img src="logo.svg" width="360"></p>
-
- <p align="center"><img src="https://raw.githubusercontent.com/ashleymcnamara/gophers/master/GOPHER_SAFARI.png" width="360"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/ashleymcnamara/gophers/master/GOPHER_SAFARI.png" width="360"></p>
 <p align="center">
 <a href="https://godoc.org/github.com/barthr/cxtgo"><img src="https://godoc.org/github.com/barthr/cxtgo?status.svg" alt="GoDoc" /></a>
 <a href="https://travis-ci.org/barthr/cxtgo"><img src="https://travis-ci.org/barthr/cxtgo.svg?branch=master" alt="Build Status" /></a>
