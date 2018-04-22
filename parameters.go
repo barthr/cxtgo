@@ -3,6 +3,17 @@ package cxtgo
 // Params are additional parameters which can be send for specific options per exchange
 type Params map[string]interface{}
 
+// MergeParams merges the parameters
+func MergeParams(params ...Params) Params {
+	mergedParams := Params{}
+	for _, value := range params {
+		for k, v := range value {
+			mergedParams[k] = v
+		}
+	}
+	return mergedParams
+}
+
 // GetInt return key in params as an int. Indicating if the actual value was an int.
 func (p Params) GetInt(key string) (int, bool) {
 	v, ok := p[key].(int)
