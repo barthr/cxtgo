@@ -32,10 +32,15 @@ type PublicAPI interface {
 
 // AccountAPI are the private user api calls for an exchange
 type AccountAPI interface {
+	// Balances returns the balances from the exchange
 	Balances(ctx context.Context, params ...Params) (Balances, error)
+	// MyTrades returns the trades made by that account
 	MyTrades(ctx context.Context, params ...Params) ([]Trade, error)
+	// FreeBalance returns the free balance in the account
 	FreeBalance(ctx context.Context, params ...Params) (PartialBalances, error)
+	// UsedBalance returns the used balance (in trade) in the account
 	UsedBalance(ctx context.Context, params ...Params) (PartialBalances, error)
+	// TotalBalance returns the total used + free balance in the account
 	TotalBalance(ctx context.Context, params ...Params) (PartialBalances, error)
 	// Currently unused
 	Deposit(ctx context.Context, params ...Params) (Response, error)
