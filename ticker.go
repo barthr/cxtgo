@@ -28,3 +28,9 @@ type Ticker struct {
 
 // Tickers represents multiple tickers from an exchange.
 type Tickers map[Symbol]Tickers
+
+// TickerStream represents a stream of tickers
+type TickerStream <-chan Ticker
+
+// TickersStream represents a stream of all the tickers
+type TickersStream map[Symbol]<-chan Ticker

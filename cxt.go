@@ -61,6 +61,12 @@ type OrderAPI interface {
 	ClosedOrders(ctx context.Context, params ...Params) ([]Order, error)
 }
 
+type StreamingAPI interface {
+	StreamTicker() TickerStream
+	StreamTickers() TickersStream
+	StreamTrades() TradeStream
+}
+
 // Exchange defines all the api calls for an exchange
 type Exchange interface {
 	Info() Base
