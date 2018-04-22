@@ -16,7 +16,9 @@ func (b *Binance) Markets(ctx context.Context) (cxtgo.MarketInfos, error) {
 	b.base.Ratelimit.Take()
 	info, err := b.client.NewExchangeInfoService().Do(ctx)
 	if err != nil {
-		return nil, cxtgo.NetworkError{cxtgo.ExchangeError{"binance", err}}
+		return nil, cxtgo.NetworkError{
+			ExchangeError: cxtgo.NewError("binance", err),
+		}
 	}
 
 	marketInfos := map[cxtgo.Symbol]cxtgo.MarketInfo{}
