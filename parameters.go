@@ -20,6 +20,12 @@ func (p Params) GetInt(key string) (int, bool) {
 	return v, ok
 }
 
+// GetBool return key in params as an bool. Indicating if the actual value was an bool.
+func (p Params) GetBool(key string) (bool, bool) {
+	v, ok := p[key].(bool)
+	return v, ok
+}
+
 // GetInt32 return key in params as an int32. Indicating if the actual value was an int32.
 func (p Params) GetInt32(key string) (int32, bool) {
 	v, ok := p[key].(int32)

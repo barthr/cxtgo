@@ -21,6 +21,7 @@ type Response struct {
 
 // PublicAPI are the public available calls for an exchange
 type PublicAPI interface {
+	Market(ctx context.Context, symbol Symbol, params ...Params) (MarketInfo, error)
 	Markets(ctx context.Context, params ...Params) (MarketInfos, error)
 	Currencies(ctx context.Context, params ...Params) (Currencies, error)
 	Ticker(ctx context.Context, symbol Symbol, params ...Params) (Ticker, error)
@@ -52,7 +53,7 @@ type AccountAPI interface {
 type OrderAPI interface {
 	LimitOrder(ctx context.Context, symbol Symbol, side Side, amount, price float64, params ...Params) (Response, error)
 	MarketOrder(ctx context.Context, symbol Symbol, side Side, amount float64, params ...Params) (Response, error)
-	CancelOrder(ctx context.Context, params ...Params) (Response, error)
+	CancelOrder(ctx context.Context, ID string, symbol *Symbol, params ...Params) (Response, error)
 	Order(ctx context.Context, params ...Params) ([]Order, error)
 	Orders(ctx context.Context, params ...Params) ([]Order, error)
 	OpenOrders(ctx context.Context, params ...Params) ([]Order, error)

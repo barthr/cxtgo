@@ -16,6 +16,7 @@ func TestParams_GetParameters(t *testing.T) {
 		"testString":  "test",
 		"testFloat32": float32(0.1),
 		"testFloat64": float64(0.1),
+		"testBool":    true,
 	}
 
 	val, ok := params.GetInt("testInt")
@@ -41,6 +42,10 @@ func TestParams_GetParameters(t *testing.T) {
 	fval64, ok := params.GetFloat64("testFloat64")
 	assert.True(ok)
 	assert.Equal(float64(0.1), fval64)
+
+	valBool, ok := params.GetBool("testBool")
+	assert.True(ok)
+	assert.Equal(true, valBool)
 
 	// invalid
 	zeroValue, ok := params.GetFloat64("non-existing")
