@@ -54,6 +54,7 @@ type OrderAPI interface {
 	LimitOrder(ctx context.Context, symbol Symbol, side Side, amount, price float64, params ...Params) (Response, error)
 	MarketOrder(ctx context.Context, symbol Symbol, side Side, amount float64, params ...Params) (Response, error)
 	CancelOrder(ctx context.Context, ID string, symbol *Symbol, params ...Params) (Response, error)
+	CancelOrders(ctx context.Context, symbol Symbol, params ...Params) (Response, error)
 	Order(ctx context.Context, params ...Params) ([]Order, error)
 	Orders(ctx context.Context, params ...Params) ([]Order, error)
 	OpenOrders(ctx context.Context, params ...Params) ([]Order, error)
