@@ -6,8 +6,8 @@ import (
 
 // BookOrder defines an offer from the order book
 type BookOrder struct {
-	Price    float64
-	Quantity float64
+	Price  float64
+	Amount float64
 }
 
 // Bid represents a bid offer from the order book
@@ -33,14 +33,10 @@ type Summary struct {
 }
 
 type ConcurrentOrderbook struct {
+	Symbol
 	sync.RWMutex
-
-	symbol Symbol
 }
 
-func (co *ConcurrentOrderbook) Symbol() Symbol {
-	return co.symbol
-}
 func (co *ConcurrentOrderbook) Head(n int) Summary {
 	return Summary{}
 }

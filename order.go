@@ -73,8 +73,8 @@ func (ot OrderType) String() string {
 
 // Order represents an order at an exchange.
 type Order struct {
+	Symbol
 	ID        string
-	Symbol    Symbol
 	Timestamp int64
 	Datetime  time.Time
 	Status    OrderStatus

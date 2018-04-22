@@ -9,6 +9,14 @@ import (
 // Opt mutates the settings for the exchange.
 type Opt func(*Base)
 
+// WithCustomParams sets custom parameters for the exchange.
+// Additional exchange specific parameters can be passed in here and used in the exchange implemenations.
+func WithCustomParams(custom Params) Opt {
+	return func(b *Base) {
+		b.CustomParams = custom
+	}
+}
+
 // WithIncludeRaw sets the toggle to include the raw response from the exchange.
 func WithIncludeRaw(toggle bool) Opt {
 	return func(b *Base) {
@@ -87,14 +95,15 @@ func NewBase(opts ...Opt) Base {
 
 // Base is the base information and methods for an exchange.
 type Base struct {
-	ID        string
-	Name      string
-	Raw       bool
-	Debug     bool
-	DebugLog  io.Writer
-	UserAgent string
-	APIKEY    string
-	APISecret string
-	Ratelimit ratelimit.Limiter
-	Market    map[Symbol]MarketInfo
+	ID           string
+	Name         string
+	Raw          bool
+	Debug        bool
+	DebugLog     io.Writer
+	UserAgent    string
+	APIKEY       string
+	APISecret    string
+	Ratelimit    ratelimit.Limiter
+	Market       MarketInfos
+	CustomParams Params
 }

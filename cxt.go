@@ -22,8 +22,8 @@ type Response struct {
 // PublicAPI are the public available calls for an exchange
 type PublicAPI interface {
 	Markets(ctx context.Context) (MarketInfos, error)
-	Ticker(ctx context.Context) (Response, error)
-	Tickers(ctx context.Context) (Response, error)
+	Ticker(ctx context.Context) (Ticker, error)
+	Tickers(ctx context.Context) (Tickers, error)
 	OrderBook(ctx context.Context, symbol Symbol) (Orderbook, error)
 	OHLCV(ctx context.Context) (Response, error)
 	Trades(ctx context.Context) (Response, error)
@@ -35,6 +35,9 @@ type AccountAPI interface {
 	MyTrades(ctx context.Context) (Response, error)
 	Deposit(ctx context.Context) (Response, error)
 	Withdraw(ctx context.Context) (Response, error)
+	FreeBalance(ctx context.Context) (PartialBalances, error)
+	UsedBalance(ctx context.Context) (PartialBalances, error)
+	TotalBalance(ctx context.Context) (PartialBalances, error)
 }
 
 // OrderAPI are all the calls for creating updating and fetching orders

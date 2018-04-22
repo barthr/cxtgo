@@ -11,3 +11,6 @@ type Balance struct {
 // Balances represent all the balances from an exchange.
 // Currency mapped to the actual balance.
 type Balances map[string]Balance
+
+// PartialBalances represents partial balances for a currency (for example Free, Used, Total).
+type PartialBalances map[string]float64

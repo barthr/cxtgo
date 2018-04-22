@@ -23,10 +23,10 @@ type MarketLimit struct {
 
 // MarketInfo defines all the info for a market (given pair). Things likes what kind of maker and taker fee etc.
 type MarketInfo struct {
+	Symbol
 	ID        string
 	Base      string
 	Quote     string
-	Symbol    Symbol
 	Active    bool
 	Precision MarketPrecision
 	Limits    MarketLimit
