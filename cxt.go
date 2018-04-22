@@ -21,7 +21,7 @@ type Response struct {
 
 // PublicAPI are the public available calls for an exchange
 type PublicAPI interface {
-	Markets(ctx context.Context) (map[Symbol]MarketInfo, error)
+	Markets(ctx context.Context) (MarketInfos, error)
 	Ticker(ctx context.Context) (Response, error)
 	Tickers(ctx context.Context) (Response, error)
 	OrderBook(ctx context.Context, symbol Symbol) (Orderbook, error)
@@ -31,7 +31,7 @@ type PublicAPI interface {
 
 // AccountAPI are the private user api calls for an exchange
 type AccountAPI interface {
-	Balance(ctx context.Context) (Response, error)
+	Balance(ctx context.Context) (Balances, error)
 	MyTrades(ctx context.Context) (Response, error)
 	Deposit(ctx context.Context) (Response, error)
 	Withdraw(ctx context.Context) (Response, error)

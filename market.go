@@ -35,3 +35,6 @@ type MarketInfo struct {
 	Maker     float64
 	Raw       []byte
 }
+
+// MarketInfos defines all the info for a market for every symbol.
+type MarketInfos map[Symbol]MarketInfo

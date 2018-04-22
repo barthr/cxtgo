@@ -12,7 +12,7 @@ import (
 )
 
 // Markets loads all the markets from binance
-func (b *Binance) Markets(ctx context.Context) (map[cxtgo.Symbol]cxtgo.MarketInfo, error) {
+func (b *Binance) Markets(ctx context.Context) (cxtgo.MarketInfos, error) {
 	b.base.Ratelimit.Take()
 	info, err := b.client.NewExchangeInfoService().Do(ctx)
 	if err != nil {
