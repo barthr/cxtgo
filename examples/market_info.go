@@ -22,5 +22,23 @@ func main() {
 	}
 	info := market[cxtgo.NewSymbol("ETH", "BTC")]
 	fmt.Printf("%v\n", info.Precision.Amount)
+}
 
+func test(ex cxtgo.StreamingAPI) {
+	params := cxtgo.Params{
+		"limit": 50,
+	}
+	opts := []cxtgo.StreamOpt{
+		cxtgo.WithStreamSymbol(cxtgo.NewSymbol("ETH", "BTC")),
+		cxtgo.WithStreamParams(params),
+	}
+	ex.StreamOrderbook(
+		func(s cxtgo.Summary) {
+			// do something with summary
+		},
+		func(err error) {
+			// do something with error
+		},
+		opts...,
+	)
 }
