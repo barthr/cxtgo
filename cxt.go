@@ -61,10 +61,11 @@ type OrderAPI interface {
 	ClosedOrders(ctx context.Context, params ...Params) ([]Order, error)
 }
 
+// StreamingAPI defines the streaming api endpoints for an exchange
 type StreamingAPI interface {
-	StreamTicker() TickerStream
-	StreamTickers() TickersStream
-	StreamTrades() TradeStream
+	OrderbookStreamer
+	TickerStreamer
+	TradeStreamer
 }
 
 // Exchange defines all the api calls for an exchange

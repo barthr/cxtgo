@@ -21,11 +21,11 @@ go get github.com/barthr/cxtgo
 
 This is very much a work in progress. The goal is to have the most popular 50 crypto exchanges included.
 
-| Exchange        | Implemented| Work in progess |
-| ------------- |---------------|----------------|
-| Binance      | No | Yes |
-| Bitfinex     | No | Yes |
-| Bitmex       | No | Yes |
+| Exchange        | Implemented| Work in progess |Order book streaming | Ticker streaming | Trade streaming |
+| ------------- |---------------|----------------|---------------------|------------------|-----------------|
+| Binance      | No | Yes | Yes | Yes | Yes |
+| Bitfinex     | No | Yes | | | |
+| Bitmex       | No | Yes | | | |
 
 ## Contributing
 

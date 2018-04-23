@@ -25,6 +25,11 @@ type Orderbook interface {
 	Error() error
 }
 
+// OrderbookStreamer is a streamer interface for the orderbook
+type OrderbookStreamer interface {
+	StreamOrderbook(s Symbol, onUpdate func(s Summary), onError func(err error)) error
+}
+
 // Summary defines a view of the order book.
 // The bids are sorted descending and the ask ascending.
 type Summary struct {

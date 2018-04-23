@@ -29,8 +29,7 @@ type Ticker struct {
 // Tickers represents multiple tickers from an exchange.
 type Tickers map[Symbol]Tickers
 
-// TickerStream represents a stream of tickers
-type TickerStream <-chan Ticker
-
-// TickersStream represents a stream of all the tickers
-type TickersStream map[Symbol]<-chan Ticker
+// TickerStreamer is a streamer interface for tickers
+type TickerStreamer interface {
+	StreamTicker(s Symbol, onUpdate func(t Ticker), onError func(err error)) error
+}
