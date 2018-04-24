@@ -1,6 +1,9 @@
 package cxtgo
 
-import "context"
+import (
+	"context"
+	"time"
+)
 
 // StreamConfig defines the configuration options for the stream
 type StreamConfig struct {
@@ -47,3 +50,41 @@ type TradeStreamer interface {
 type OrderbookStreamer interface {
 	StreamOrderbook(onUpdate func(s Summary), onError func(err error), opts ...StreamOpt) error
 }
+
+// StreamType defines which type of stream it is. This is helpfull for debuggin errors
+type StreamType int
+
+const (
+	// UnknownStream indicates a stream which isn't known
+	UnknownStream StreamType = iota
+	// TradeStream indicates a trade stream
+	TradeStream
+	// TickerStream indicates a ticker stream
+	TickerStream
+	// OrderbookStream indicates a orderbook stream type
+	OrderbookStream
+)
+
+type (
+	// StreamError is the base error in a stream
+	StreamError struct {
+		StreamType
+		ExchangeError
+	}
+
+	// StreamClosedByExchangeError represents an error when the stream is closed by the exchange.
+	StreamClosedByExchangeError struct {
+		StreamError
+	}
+
+	// StreamUnavailableError represents an error when the stream is (currently) unavailable.
+	StreamUnavailableError struct {
+		StreamError
+	}
+
+	// StreamMaintenanceError represents an error when the stream is under maintenance.
+	StreamMaintenanceError struct {
+		StreamError
+		time.Duration
+	}
+)
