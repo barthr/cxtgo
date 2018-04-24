@@ -4,6 +4,7 @@ import "context"
 
 // StreamConfig defines the configuration options for the stream
 type StreamConfig struct {
+	context.Context
 	Symbol
 	Params
 }
@@ -25,17 +26,24 @@ func WithStreamSymbol(s Symbol) StreamOpt {
 	}
 }
 
+// WithStreamContext set's the context for the stream
+func WithStreamContext(ctx context.Context) StreamOpt {
+	return func(sc *StreamConfig) {
+		sc.Context = ctx
+	}
+}
+
 // TickerStreamer is a streamer interface for tickers
 type TickerStreamer interface {
-	StreamTicker(ctx context.Context, onUpdate func(t Ticker), onError func(err error), opts ...StreamOpt) error
+	StreamTicker(onUpdate func(t Ticker), onError func(err error), opts ...StreamOpt) error
 }
 
 // TradeStreamer is a streamer interface for the trades
 type TradeStreamer interface {
-	StreamTrades(ctx context.Context, onUpdate func(t Trade), onError func(err error), opts ...StreamOpt) error
+	StreamTrades(onUpdate func(t Trade), onError func(err error), opts ...StreamOpt) error
 }
 
 // OrderbookStreamer is a streamer interface for the orderbook
 type OrderbookStreamer interface {
-	StreamOrderbook(ctx context.Context, onUpdate func(s Summary), onError func(err error), opts ...StreamOpt) error
+	StreamOrderbook(onUpdate func(s Summary), onError func(err error), opts ...StreamOpt) error
 }
