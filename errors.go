@@ -19,19 +19,25 @@ func NewError(exchange string, cause error) ExchangeError {
 	}
 }
 
-// NetworkError defines a network error from the exchange
-type NetworkError struct{ ExchangeError }
+type (
+	// NetworkError defines a network error from the exchange.
+	NetworkError struct{ ExchangeError }
 
-type ConversionError struct{ ExchangeError }
+	// ConversionError defines a conversion error from the exchange.
+	ConversionError struct{ ExchangeError }
 
-type NotSupported struct{ ExchangeError }
+	// NotSupported defines a not supported error from the exchange.
+	NotSupported struct{ ExchangeError }
 
-type AuthenticationError struct{ ExchangeError }
+	// AuthenticationError defines a authentication error from the exchange.
+	AuthenticationError struct{ ExchangeError }
 
-type InsufficientFunds struct{ ExchangeError }
+	// InsufficientFunds defines a error indicating that there are not sufficient funds for the operation.
+	InsufficientFunds struct{ ExchangeError }
 
-type InvalidOrder struct{ ExchangeError }
+	InvalidOrder struct{ ExchangeError }
 
-type OrderNotFound struct{ ExchangeError }
+	OrderNotFound struct{ ExchangeError }
 
-type ExchangeNotAvailable struct{ ExchangeError }
+	ExchangeNotAvailable struct{ ExchangeError }
+)
