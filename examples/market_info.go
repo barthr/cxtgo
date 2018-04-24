@@ -31,9 +31,11 @@ func test(ex cxtgo.StreamingAPI) {
 	opts := []cxtgo.StreamOpt{
 		cxtgo.WithStreamSymbol(cxtgo.NewSymbol("ETH", "BTC")),
 		cxtgo.WithStreamParams(params),
+		cxtgo.WithStreamContext(context.Background()),
 	}
 	ex.StreamOrderbook(
 		func(s cxtgo.Summary) {
+
 			// do something with summary
 		},
 		func(err error) {
