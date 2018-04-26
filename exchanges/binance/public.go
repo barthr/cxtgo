@@ -12,7 +12,7 @@ import (
 )
 
 // Markets loads all the markets from binance
-func (b *Binance) Markets(ctx context.Context) (cxtgo.MarketInfos, error) {
+func (b *Binance) Markets(ctx context.Context, params ...cxtgo.Params) (cxtgo.MarketInfos, error) {
 	b.base.Ratelimit.Take()
 	info, err := b.client.NewExchangeInfoService().Do(ctx)
 	if err != nil {
@@ -103,37 +103,37 @@ func (b *Binance) initMarkets() error {
 	return err
 }
 
-func (b *Binance) Ticker(ctx context.Context) (cxtgo.Response, error) {
+func (b *Binance) Ticker(ctx context.Context) error {
 	if err := b.initMarkets(); err != nil {
-		return cxtgo.Response{}, err
+		return err
 	}
 	panic("not implemented")
 }
 
-func (b *Binance) Tickers(ctx context.Context) (cxtgo.Response, error) {
+func (b *Binance) Tickers(ctx context.Context) error {
 	if err := b.initMarkets(); err != nil {
-		return cxtgo.Response{}, err
+		return err
 	}
 	panic("not implemented")
 }
 
-func (b *Binance) OrderBook(ctx context.Context) (cxtgo.Response, error) {
+func (b *Binance) OrderBook(ctx context.Context) error {
 	if err := b.initMarkets(); err != nil {
-		return cxtgo.Response{}, err
+		return err
 	}
 	panic("not implemented")
 }
 
-func (b *Binance) OHLCV(ctx context.Context) (cxtgo.Response, error) {
+func (b *Binance) OHLCV(ctx context.Context) error {
 	if err := b.initMarkets(); err != nil {
-		return cxtgo.Response{}, err
+		return err
 	}
 	panic("not implemented")
 }
 
-func (b *Binance) Trades(ctx context.Context) (cxtgo.Response, error) {
+func (b *Binance) Trades(ctx context.Context) error {
 	if err := b.initMarkets(); err != nil {
-		return cxtgo.Response{}, err
+		return err
 	}
 	panic("not implemented")
 }
