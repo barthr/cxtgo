@@ -6,82 +6,82 @@ import (
 	"go.uber.org/ratelimit"
 )
 
-// Opt mutates the settings for the exchange.
-type Opt func(*Base)
+// BaseOpt mutates the settings for the exchange.
+type BaseOpt func(*Base)
 
 // WithCustomParams sets custom parameters for the exchange.
 // Additional exchange specific parameters can be passed in here and used in the exchange implemenations.
-func WithCustomParams(custom Params) Opt {
+func WithCustomParams(custom Params) BaseOpt {
 	return func(b *Base) {
 		b.CustomParams = custom
 	}
 }
 
 // WithIncludeRaw sets the toggle to include the raw response from the exchange.
-func WithIncludeRaw(toggle bool) Opt {
+func WithIncludeRaw(toggle bool) BaseOpt {
 	return func(b *Base) {
 		b.Raw = toggle
 	}
 }
 
 // WithName sets the name for the exchange.
-func WithName(name string) Opt {
+func WithName(name string) BaseOpt {
 	return func(b *Base) {
 		b.Name = name
 	}
 }
 
 // WithRatelimit sets a rate limit to use for the api calls to the exchange.
-func WithRatelimit(rl ratelimit.Limiter) Opt {
+func WithRatelimit(rl ratelimit.Limiter) BaseOpt {
 	return func(b *Base) {
 		b.Ratelimit = rl
 	}
 }
 
 // WithID sets the id for the exchange.
-func WithID(id string) Opt {
+func WithID(id string) BaseOpt {
 	return func(b *Base) {
 		b.ID = id
 	}
 }
 
 // WithUserAgent sets the user agent for the exchange.
-func WithUserAgent(userAgent string) Opt {
+func WithUserAgent(userAgent string) BaseOpt {
 	return func(b *Base) {
 		b.UserAgent = userAgent
 	}
 }
 
 // WithAPIKey sets the api key for the exchange.
-func WithAPIKey(key string) Opt {
+func WithAPIKey(key string) BaseOpt {
 	return func(b *Base) {
 		b.APIKEY = key
 	}
 }
 
 // WithAPISecret sets the api secret for the exchange.
-func WithAPISecret(secret string) Opt {
+func WithAPISecret(secret string) BaseOpt {
 	return func(b *Base) {
 		b.APISecret = secret
 	}
 }
 
 // WithDebug sets the debug flag for the exchange.
-func WithDebug(toggle bool) Opt {
+func WithDebug(toggle bool) BaseOpt {
 	return func(b *Base) {
 		b.Debug = toggle
 	}
 }
 
 // WithDebuglogger sets the debug logger output to w for the exchange.
-func WithDebuglogger(w io.Writer) Opt {
+func WithDebuglogger(w io.Writer) BaseOpt {
 	return func(b *Base) {
 		b.DebugLog = w
 	}
 }
 
 // NewBase returns a new base exchange with the given opts applied.
-func NewBase(opts ...Opt) Base {
+func NewBase(opts ...BaseOpt) Base {
 	b := Base{
 		ID:     "unknown",
 		Name:   "unnamed exchange",

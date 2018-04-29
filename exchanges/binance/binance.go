@@ -22,8 +22,8 @@ type Binance struct {
 }
 
 // New returns an instance of the binance exchange, with some defaults set.
-func New(opts ...cxtgo.Opt) *Binance {
-	binanceOpts := []cxtgo.Opt{
+func New(opts ...cxtgo.BaseOpt) *Binance {
+	binanceOpts := []cxtgo.BaseOpt{
 		cxtgo.WithID(uuid.NewV4().String()),
 		cxtgo.WithName("Binance"),
 		cxtgo.WithUserAgent("cxtgo/0.1"),
