@@ -39,13 +39,26 @@ func TestBinance_LimitOrder(t *testing.T) {
 			})
 		},
 	)
-	r.NoError(binance.LimitOrder(context.Background(), cxtgo.NewSymbol("BTC", "ETH"), cxtgo.Buy, 10, 10))
+	r.NoError(
+		binance.LimitOrder(
+			context.Background(),
+			cxtgo.NewSymbol("BTC", "ETH"),
+			cxtgo.Buy,
+			cxtgo.Offer{
+				Price:  10,
+				Amount: 10,
+			},
+			cxtgo.Params{
+				"timeInForce": "FOK",
+			},
+		),
+	)
 
 	httpmock.RegisterResponder(http.MethodPost, baseURL+"/api/v3/order",
 		func(req *http.Request) (*http.Response, error) {
 			return nil, errors.New("failing request")
 		},
 	)
-	r.Error(binance.LimitOrder(context.Background(), cxtgo.NewSymbol("BTC", "ETH"), cxtgo.Buy, 10, 10))
+	// r.Error(binance.LimitOrder(context.Background(), cxtgo.NewSymbol("BTC", "ETH"), cxtgo.Buy, 10, 10))
 
 }

@@ -49,6 +49,12 @@ func (os OrderStatus) String() string {
 	return statusString[os]
 }
 
+type OrderParams struct {
+	Amount float64
+	Price  float64
+	Custom Params
+}
+
 // OrderType represents the type of the order.
 type OrderType int
 
