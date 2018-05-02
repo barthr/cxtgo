@@ -23,7 +23,7 @@ func TestBaseOpts(t *testing.T) {
 	w := os.Stdout
 
 	opts := []BaseOpt{
-		WithCustomParams(params),
+		WithCustom(params),
 		WithIncludeRaw(raw),
 		WithName(name),
 		WithRatelimit(rl),

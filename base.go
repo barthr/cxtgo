@@ -9,9 +9,9 @@ import (
 // BaseOpt mutates the settings for the exchange.
 type BaseOpt func(*Base)
 
-// WithCustomParams sets custom parameters for the exchange.
+// WithCustom sets custom parameters for the exchange.
 // Additional exchange specific parameters can be passed in here and used in the exchange implemenations.
-func WithCustomParams(custom Params) BaseOpt {
+func WithCustom(custom Params) BaseOpt {
 	return func(b *Base) {
 		b.CustomParams = custom
 	}

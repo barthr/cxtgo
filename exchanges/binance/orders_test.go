@@ -3,7 +3,6 @@ package binance
 import (
 	"context"
 	"net/http"
-	"os"
 	"testing"
 
 	"github.com/barthr/cxtgo"
@@ -15,14 +14,15 @@ import (
 func TestBinance_LimitOrder(t *testing.T) {
 	r := require.New(t)
 	binance := New(
-		cxtgo.WithDebuglogger(os.Stdout),
-		cxtgo.WithDebug(true),
+		cxtgo.WithCustom(cxtgo.Params{
+			"recvWindow": 10000,
+		}),
 	)
 
-	httpmock.ActivateNonDefault(binance.http.GetClient())
-	defer httpmock.DeactivateAndReset()
+	mock := httpmock.NewMockTransport()
+	binance.http.SetTransport(mock)
 
-	httpmock.RegisterResponder(http.MethodPost, baseURL+"/api/v3/order",
+	mock.RegisterResponder(http.MethodPost, baseURL+"/api/v3/order",
 		func(req *http.Request) (*http.Response, error) {
 			return httpmock.NewJsonResponse(http.StatusCreated, map[string]interface{}{
 				"symbol":        "BTCUSDT",
@@ -54,7 +54,7 @@ func TestBinance_LimitOrder(t *testing.T) {
 		),
 	)
 
-	httpmock.RegisterResponder(http.MethodPost, baseURL+"/api/v3/order",
+	mock.RegisterResponder(http.MethodPost, baseURL+"/api/v3/order",
 		func(req *http.Request) (*http.Response, error) {
 			return nil, errors.New("failing request")
 		},
