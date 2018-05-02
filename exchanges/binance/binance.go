@@ -2,6 +2,10 @@ package binance
 
 import (
 	"os"
+	"strconv"
+	"time"
+
+	"github.com/go-resty/resty"
 
 	binance "github.com/adshao/go-binance"
 	"github.com/barthr/cxtgo"
@@ -11,13 +15,17 @@ import (
 	"go.uber.org/ratelimit"
 )
 
-const binanceReqPerMin = 1200
+const (
+	binanceReqPerMin  = 1200
+	defaultRecvWindow = 5000
+	baseURL           = "https://api.binance.com"
+)
 
 // Binance is the binance implementation for cxtgo interface
 type Binance struct {
-	test   bool
 	base   cxtgo.Base
 	client *binance.Client
+	http   *resty.Client
 	once   resync.Once
 }
 
@@ -33,10 +41,28 @@ func New(opts ...cxtgo.BaseOpt) *Binance {
 	binanceOpts = append(binanceOpts, opts...)
 
 	ex := cxtgo.NewBase(binanceOpts...)
+	recvWindow, ok := ex.CustomParams.GetInt("recvWindow")
+	if !ok {
+		recvWindow = defaultRecvWindow
+	}
 	b := &Binance{
 		base:   ex,
 		client: binance.NewClient(ex.APIKEY, ex.APISecret),
 		once:   resync.Once{},
+		http: resty.New().
+			SetDebug(ex.Debug).
+			SetLogger(ex.DebugLog).
+			SetTimeout(time.Second*10).
+			SetHostURL(baseURL).
+			SetHeader("User-Agent", ex.UserAgent).
+			SetQueryParams(map[string]string{
+				"recvWindow":   strconv.Itoa(recvWindow),
+				"X-MBX-APIKEY": ex.APIKEY,
+			}),
+	}
+
+	if ex.Proxy != "" {
+		b.http.SetProxy(ex.Proxy)
 	}
 
 	return b
@@ -63,7 +89,4 @@ func (b *Binance) AmountToLots(s cxtgo.Symbol, amount float64) (float64, error) 
 		return 0, errors.New("symbol not found")
 	}
 	return binance.AmountToLotSize(info.Lot, info.Precision.Amount, amount), nil
-}
-
-type binanceAdapter struct {
 }

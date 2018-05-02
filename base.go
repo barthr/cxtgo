@@ -80,6 +80,13 @@ func WithDebuglogger(w io.Writer) BaseOpt {
 	}
 }
 
+// WithProxyURL sets the proxy to use for the http requests
+func WithProxyURL(proxy string) BaseOpt {
+	return func(b *Base) {
+		b.Proxy = proxy
+	}
+}
+
 // NewBase returns a new base exchange with the given opts applied.
 func NewBase(opts ...BaseOpt) Base {
 	b := Base{
@@ -101,6 +108,7 @@ type Base struct {
 	Debug        bool
 	DebugLog     io.Writer
 	UserAgent    string
+	Proxy        string
 	APIKEY       string
 	APISecret    string
 	Ratelimit    ratelimit.Limiter
