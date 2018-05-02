@@ -17,7 +17,7 @@ func (b *Binance) Markets(ctx context.Context, params ...cxtgo.Params) (cxtgo.Ma
 	info, err := b.client.NewExchangeInfoService().Do(ctx)
 	if err != nil {
 		return nil, cxtgo.NetworkError{
-			ExchangeError: cxtgo.NewError("binance", err),
+			BaseError: cxtgo.NewError("binance", err),
 		}
 	}
 
@@ -38,7 +38,7 @@ func (b *Binance) Markets(ctx context.Context, params ...cxtgo.Params) (cxtgo.Ma
 			conversion, err := strconv.ParseFloat(rf, 64)
 			if err != nil {
 				return nil, cxtgo.ConversionError{
-					ExchangeError: cxtgo.ExchangeError{
+					BaseError: cxtgo.BaseError{
 						Exchange: "binance",
 						Cause:    errors.WithStack(err),
 					},

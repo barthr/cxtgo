@@ -2,18 +2,19 @@ package cxtgo
 
 import "fmt"
 
-type ExchangeError struct {
+// BaseError is the base error class for errors from cxtgo
+type BaseError struct {
 	Exchange string
 	Cause    error
 }
 
-func (ee ExchangeError) Error() string {
+func (ee BaseError) Error() string {
 	return fmt.Sprintf("[%s] failed because %v", ee.Exchange, ee.Cause)
 }
 
 // NewError instantiates a new exchange error
-func NewError(exchange string, cause error) ExchangeError {
-	return ExchangeError{
+func NewError(exchange string, cause error) BaseError {
+	return BaseError{
 		Exchange: exchange,
 		Cause:    cause,
 	}
@@ -21,23 +22,25 @@ func NewError(exchange string, cause error) ExchangeError {
 
 type (
 	// NetworkError defines a network error from the exchange.
-	NetworkError struct{ ExchangeError }
+	NetworkError struct{ BaseError }
 
 	// ConversionError defines a conversion error from the exchange.
-	ConversionError struct{ ExchangeError }
+	ConversionError struct{ BaseError }
 
-	// NotSupported defines a not supported error from the exchange.
-	NotSupported struct{ ExchangeError }
+	// NotSupportedError defines a not supported error from the exchange.
+	NotSupportedError struct{ BaseError }
 
 	// AuthenticationError defines a authentication error from the exchange.
-	AuthenticationError struct{ ExchangeError }
+	AuthenticationError struct{ BaseError }
 
-	// InsufficientFunds defines a error indicating that there are not sufficient funds for the operation.
-	InsufficientFunds struct{ ExchangeError }
+	// InsufficientFundsError defines a error indicating that there are not sufficient funds for the operation.
+	InsufficientFundsError struct{ BaseError }
 
-	InvalidOrder struct{ ExchangeError }
+	// InvalidOrderError defines an error indicating that creating an order failed because it's invalid.
+	InvalidOrderError struct{ BaseError }
 
-	OrderNotFound struct{ ExchangeError }
-
-	ExchangeNotAvailable struct{ ExchangeError }
+	// OrderNotFoundError defines an error when the requested order is not found.
+	OrderNotFoundError struct{ BaseError }
+	// ExchangeNotAvailableError defines an error for when the exchange is not available.
+	ExchangeNotAvailableError struct{ BaseError }
 )

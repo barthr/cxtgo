@@ -69,7 +69,7 @@ type (
 	// StreamError is the base error in a stream
 	StreamError struct {
 		StreamType
-		ExchangeError
+		BaseError
 	}
 
 	// StreamClosedByExchangeError represents an error when the stream is closed by the exchange.
