@@ -51,10 +51,13 @@ func New(opts ...cxtgo.BaseOpt) *Binance {
 		once:   resync.Once{},
 		http: resty.New().
 			SetDebug(ex.Debug).
+			SetLogPrefix("cxtgo.binance").
 			SetLogger(ex.DebugLog).
 			SetTimeout(time.Second*10).
 			SetHostURL(baseURL).
+			SetError(&apiError{}).
 			SetHeader("User-Agent", ex.UserAgent).
+			SetHeader("Content-Type", "application/json").
 			SetQueryParams(map[string]string{
 				"recvWindow":   strconv.Itoa(recvWindow),
 				"X-MBX-APIKEY": ex.APIKEY,
@@ -88,5 +91,29 @@ func (b *Binance) AmountToLots(s cxtgo.Symbol, amount float64) (float64, error) 
 	if !ok {
 		return 0, errors.New("symbol not found")
 	}
-	return binance.AmountToLotSize(info.Lot, info.Precision.Amount, amount), nil
+	return cxtgo.AmountToLotSize(info.Lot, info.Precision.Amount, amount), nil
 }
+
+type apiError struct {
+	Code    errorCode `json:"code,omitempty"`
+	Message string    `json:"message,omitempty"`
+}
+
+// see: https://github.com/binance-exchange/binance-official-api-docs/blob/master/errors.md
+type errorCode int
+
+const (
+	unknown                 errorCode = -1000
+	disconnected            errorCode = -1001
+	unauthorized            errorCode = -1002
+	tooManyRequests         errorCode = -1003
+	unexpectedResponse      errorCode = -1006
+	timeOut                 errorCode = -1007
+	invalidMessage          errorCode = -1013
+	unknownOrderCompisition errorCode = -1014
+	tooManyOrders           errorCode = -1015
+	serviceShuttingDown     errorCode = -1016
+	unsupportedOperation    errorCode = -1020
+	invalidTimestamp        errorCode = -1021
+	invalidSIgnature        errorCode = -1022
+)

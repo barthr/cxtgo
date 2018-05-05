@@ -2,7 +2,6 @@ package binance
 
 import (
 	"context"
-	"encoding/json"
 	"strconv"
 	"strings"
 
@@ -74,7 +73,6 @@ func (b *Binance) Markets(ctx context.Context, params ...cxtgo.Params) (cxtgo.Ma
 					Min: conversions[5],
 				},
 			},
-			Raw: b.raw(info),
 		}
 	}
 	// copy the map but return a unmodifiable version
@@ -82,17 +80,6 @@ func (b *Binance) Markets(ctx context.Context, params ...cxtgo.Params) (cxtgo.Ma
 		b.base.Market[key] = value
 	}
 	return marketInfos, nil
-}
-
-func (b *Binance) raw(v interface{}) []byte {
-	if !b.base.Raw {
-		return nil
-	}
-	raw, err := json.Marshal(v)
-	if err != nil {
-		return nil
-	}
-	return raw
 }
 
 func (b *Binance) initMarkets() error {
