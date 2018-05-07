@@ -4,7 +4,7 @@ import "time"
 
 // Ticker represents a ticker from an exchange.
 type Ticker struct {
-	Symbol
+	Symbol      Symbol
 	Ask         float64
 	Bid         float64
 	Basevolume  float64
