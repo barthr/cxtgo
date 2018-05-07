@@ -21,6 +21,25 @@ const (
 	baseURL           = "https://api.binance.com"
 )
 
+// see: https://github.com/binance-exchange/binance-official-api-docs/blob/master/errors.md
+type errorCode int
+
+const (
+	unknown                 errorCode = -1000
+	disconnected            errorCode = -1001
+	unauthorized            errorCode = -1002
+	tooManyRequests         errorCode = -1003
+	unexpectedResponse      errorCode = -1006
+	timeOut                 errorCode = -1007
+	invalidMessage          errorCode = -1013
+	unknownOrderCompisition errorCode = -1014
+	tooManyOrders           errorCode = -1015
+	serviceShuttingDown     errorCode = -1016
+	unsupportedOperation    errorCode = -1020
+	invalidTimestamp        errorCode = -1021
+	invalidSIgnature        errorCode = -1022
+)
+
 // Binance is the binance implementation for cxtgo interface
 type Binance struct {
 	base   cxtgo.Base
@@ -38,6 +57,8 @@ func New(opts ...cxtgo.BaseOpt) *Binance {
 		cxtgo.WithRatelimit(ratelimit.New(binanceReqPerMin / 60)),
 		cxtgo.WithDebuglogger(os.Stdout),
 	}
+	// Extend the base options with opts passed in
+	// The original opts can be overriden because they are executed as last in the chain
 	binanceOpts = append(binanceOpts, opts...)
 
 	ex := cxtgo.NewBase(binanceOpts...)
@@ -45,6 +66,7 @@ func New(opts ...cxtgo.BaseOpt) *Binance {
 	if !ok {
 		recvWindow = defaultRecvWindow
 	}
+	// Create default binance struct with some default fields set
 	b := &Binance{
 		base:   ex,
 		client: binance.NewClient(ex.APIKEY, ex.APISecret),
@@ -64,6 +86,7 @@ func New(opts ...cxtgo.BaseOpt) *Binance {
 			}),
 	}
 
+	// Set proxy for the request if one is provided as argument
 	if ex.Proxy != "" {
 		b.http.SetProxy(ex.Proxy)
 	}
@@ -89,7 +112,7 @@ func (b *Binance) AmountToLots(s cxtgo.Symbol, amount float64) (float64, error) 
 	}
 	info, ok := b.base.Market[s]
 	if !ok {
-		return 0, errors.New("symbol not found")
+		return 0, cxtgo.WrapError(cxtgo.SymbolNotFoundError{}, "binance", errors.New("requested symbol is not found"))
 	}
 	return cxtgo.AmountToLotSize(info.Lot, info.Precision.Amount, amount), nil
 }
@@ -98,22 +121,3 @@ type apiError struct {
 	Code    errorCode `json:"code,omitempty"`
 	Message string    `json:"message,omitempty"`
 }
-
-// see: https://github.com/binance-exchange/binance-official-api-docs/blob/master/errors.md
-type errorCode int
-
-const (
-	unknown                 errorCode = -1000
-	disconnected            errorCode = -1001
-	unauthorized            errorCode = -1002
-	tooManyRequests         errorCode = -1003
-	unexpectedResponse      errorCode = -1006
-	timeOut                 errorCode = -1007
-	invalidMessage          errorCode = -1013
-	unknownOrderCompisition errorCode = -1014
-	tooManyOrders           errorCode = -1015
-	serviceShuttingDown     errorCode = -1016
-	unsupportedOperation    errorCode = -1020
-	invalidTimestamp        errorCode = -1021
-	invalidSIgnature        errorCode = -1022
-)

@@ -1,6 +1,8 @@
 package cxtgo
 
-import "fmt"
+import (
+	"fmt"
+)
 
 // BaseError is the base error class for errors from cxtgo
 type BaseError struct {
@@ -12,15 +14,34 @@ func (ee BaseError) Error() string {
 	return fmt.Sprintf("[%s] failed because %v", ee.Exchange, ee.Cause)
 }
 
-// NewError instantiates a new exchange error
-func NewError(exchange string, cause error) BaseError {
-	return BaseError{
-		Exchange: exchange,
-		Cause:    cause,
+// WrapError wraps an exchange error
+func WrapError(parent error, exchange string, cause error) error {
+	switch parent.(type) {
+	case SymbolNotFoundError:
+		return SymbolNotFoundError{BaseError{exchange, cause}}
+	case NetworkError:
+		return NetworkError{BaseError{exchange, cause}}
+	case ConversionError:
+		return ConversionError{BaseError{exchange, cause}}
+	case NotSupportedError:
+		return NotSupportedError{BaseError{exchange, cause}}
+	case AuthenticationError:
+		return AuthenticationError{BaseError{exchange, cause}}
+	case InsufficientFundsError:
+		return InsufficientFundsError{BaseError{exchange, cause}}
+	case InvalidOrderError:
+		return InvalidOrderError{BaseError{exchange, cause}}
+	case OrderNotFoundError:
+		return OrderNotFoundError{BaseError{exchange, cause}}
+	case ExchangeNotAvailableError:
+		return ExchangeNotAvailableError{BaseError{exchange, cause}}
 	}
+	return BaseError{exchange, cause}
 }
 
 type (
+	// SymbolNotFoundError defines an error for when executing an action on the exchange for a symbol which is not found.
+	SymbolNotFoundError struct{ BaseError }
 	// NetworkError defines a network error from the exchange.
 	NetworkError struct{ BaseError }
 

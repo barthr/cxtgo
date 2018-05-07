@@ -23,17 +23,20 @@ func (b *Binance) LimitOrder(ctx context.Context, symbol cxtgo.Symbol, side cxtg
 		if ok {
 			req.SetQueryParam("recvWindow", strconv.Itoa(recvWindow))
 		}
+		detail, ok := params[0].GetString("newOrderRespType")
+		if ok {
+			req.SetQueryParam("newOrderRespType", detail)
+		}
 	}
 
 	resp, err := req.SetContext(ctx).SetQueryParams(map[string]string{
-		"symbol":           symbol.String(),
-		"side":             side.String(),
-		"type":             cxtgo.LimitOrder.String(),
-		"timeInForce":      timeInForce,
-		"price":            strconv.FormatFloat(offer.Price, 'f', -1, 64),
-		"quantity":         strconv.FormatFloat(offer.Amount, 'f', -1, 64),
-		"timestamp":        strconv.FormatInt(time.Now().UnixNano(), 10),
-		"newOrderRespType": "FULL",
+		"symbol":      symbol.String(),
+		"side":        side.String(),
+		"type":        cxtgo.LimitOrder.String(),
+		"timeInForce": timeInForce,
+		"price":       strconv.FormatFloat(offer.Price, 'f', -1, 64),
+		"quantity":    strconv.FormatFloat(offer.Amount, 'f', -1, 64),
+		"timestamp":   strconv.FormatInt(time.Now().UnixNano(), 10),
 	}).Post("/api/v3/order")
 
 	if err != nil {
