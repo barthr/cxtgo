@@ -75,8 +75,7 @@ func (ot OrderType) String() string {
 type Order struct {
 	Symbol    Symbol
 	ID        string
-	Timestamp int64
-	Datetime  time.Time
+	Timestamp time.Time
 	Status    OrderStatus
 	Type      OrderType
 	Price     float64

@@ -60,7 +60,7 @@ func (b *Binance) LimitOrder(ctx context.Context, symbol cxtgo.Symbol, side cxtg
 	return cxtgo.Order{
 		Symbol:    symbol,
 		ID:        strconv.Itoa(order.OrderID),
-		Timestamp: order.TransactTime,
+		Timestamp: time.Unix(order.TransactTime, 0),
 		Status:    orderStatus[order.Status],
 		Type:      orderType[order.Type],
 		Price:     order.Price,
@@ -155,4 +155,13 @@ type createOrderResponse struct {
 	TimeInForce   string  `json:"timeInForce"`
 	Type          string  `json:"type"`
 	Side          string  `json:"side"`
+}
+
+type orderStatusResponse struct {
+}
+
+type cancelOrderResponse struct {
+}
+
+type closeOrderResponse struct {
 }
