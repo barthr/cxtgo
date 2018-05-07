@@ -10,14 +10,24 @@ import (
 
 func (b *Binance) LimitOrder(ctx context.Context, symbol cxtgo.Symbol, side cxtgo.Side, offer cxtgo.Offer, params ...cxtgo.Params) (cxtgo.Order, error) {
 	if err := b.initMarkets(); err != nil {
-		return cxtgo.Order{}, err
+		return cxtgo.Order{}, cxtgo.WrapError(cxtgo.ExchangeNotAvailableError{}, "binance", err)
 	}
-	req := b.http.R().SetResult(&createOrderResponse{})
-	timeInForce := "GTC"
+	req := b.http.R().
+		SetResult(&createOrderResponse{}).
+		SetQueryParams(map[string]string{
+			"symbol":      symbol.String(),
+			"side":        side.String(),
+			"type":        cxtgo.LimitOrder.String(),
+			"timeInForce": "GTC",
+			"price":       strconv.FormatFloat(offer.Price, 'f', -1, 64),
+			"quantity":    strconv.FormatFloat(offer.Amount, 'f', -1, 64),
+			"timestamp":   strconv.FormatInt(time.Now().UnixNano(), 10),
+		})
+
 	if len(params) > 0 {
-		val, ok := params[0].GetString("timeInForce")
+		timeInForce, ok := params[0].GetString("timeInForce")
 		if ok {
-			timeInForce = val
+			req.SetQueryParam("timeInForce", timeInForce)
 		}
 		recvWindow, ok := params[0].GetInt("recvWindow")
 		if ok {
@@ -29,29 +39,16 @@ func (b *Binance) LimitOrder(ctx context.Context, symbol cxtgo.Symbol, side cxtg
 		}
 	}
 
-	resp, err := req.SetContext(ctx).SetQueryParams(map[string]string{
-		"symbol":      symbol.String(),
-		"side":        side.String(),
-		"type":        cxtgo.LimitOrder.String(),
-		"timeInForce": timeInForce,
-		"price":       strconv.FormatFloat(offer.Price, 'f', -1, 64),
-		"quantity":    strconv.FormatFloat(offer.Amount, 'f', -1, 64),
-		"timestamp":   strconv.FormatInt(time.Now().UnixNano(), 10),
-	}).Post("/api/v3/order")
-
+	resp, err := req.SetContext(ctx).Post("/api/v3/order")
 	if err != nil {
 		binanceErr, ok := resp.Error().(*apiError)
 		if ok {
 			switch binanceErr.Code {
 			case disconnected:
-				return cxtgo.Order{}, cxtgo.ExchangeNotAvailableError{
-					BaseError: cxtgo.NewError("binance", err),
-				}
+				return cxtgo.Order{}, cxtgo.WrapError(cxtgo.ExchangeNotAvailableError{}, "binance", err)
 			}
 		}
-		return cxtgo.Order{}, cxtgo.ExchangeNotAvailableError{
-			BaseError: cxtgo.NewError("binance", err),
-		}
+		return cxtgo.Order{}, cxtgo.WrapError(cxtgo.ExchangeNotAvailableError{}, "binance", err)
 	}
 	order := resp.Result().(*createOrderResponse)
 
