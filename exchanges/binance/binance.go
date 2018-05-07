@@ -1,6 +1,7 @@
 package binance
 
 import (
+	"fmt"
 	"os"
 	"strconv"
 	"time"
@@ -19,6 +20,12 @@ const (
 	binanceReqPerMin  = 1200
 	defaultRecvWindow = 5000
 	baseURL           = "https://api.binance.com"
+)
+
+var (
+	errSymbolNotFound = func(s cxtgo.Symbol) error {
+		return fmt.Errorf("symbol %v is not found", s.String())
+	}
 )
 
 // see: https://github.com/binance-exchange/binance-official-api-docs/blob/master/errors.md
@@ -112,7 +119,7 @@ func (b *Binance) AmountToLots(s cxtgo.Symbol, amount float64) (float64, error) 
 	}
 	info, ok := b.base.Market[s]
 	if !ok {
-		return 0, cxtgo.WrapError(cxtgo.SymbolNotFoundError{}, "binance", errors.New("requested symbol is not found"))
+		return 0, cxtgo.WrapError(cxtgo.SymbolNotFoundError{}, "binance", errSymbolNotFound(s))
 	}
 	return cxtgo.AmountToLotSize(info.Lot, info.Precision.Amount, amount), nil
 }
