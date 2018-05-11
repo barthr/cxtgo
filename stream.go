@@ -2,7 +2,6 @@ package cxtgo
 
 import (
 	"context"
-	"time"
 )
 
 // StreamConfig defines the configuration options for the stream
@@ -63,28 +62,4 @@ const (
 	TickerStream
 	// OrderbookStream indicates a orderbook stream type
 	OrderbookStream
-)
-
-type (
-	// StreamError is the base error in a stream
-	StreamError struct {
-		StreamType
-		BaseError
-	}
-
-	// StreamClosedByExchangeError represents an error when the stream is closed by the exchange.
-	StreamClosedByExchangeError struct {
-		StreamError
-	}
-
-	// StreamUnavailableError represents an error when the stream is (currently) unavailable.
-	StreamUnavailableError struct {
-		StreamError
-	}
-
-	// StreamMaintenanceError represents an error when the stream is under maintenance.
-	StreamMaintenanceError struct {
-		StreamError
-		time.Duration
-	}
 )

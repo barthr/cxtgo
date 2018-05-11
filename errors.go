@@ -2,6 +2,7 @@ package cxtgo
 
 import (
 	"fmt"
+	"time"
 )
 
 // BaseError is the base error class for errors from cxtgo
@@ -64,4 +65,21 @@ type (
 	OrderNotFoundError struct{ BaseError }
 	// ExchangeNotAvailableError defines an error for when the exchange is not available.
 	ExchangeNotAvailableError struct{ BaseError }
+
+	// StreamError is the base error in a stream
+	StreamError struct {
+		StreamType
+		BaseError
+	}
+
+	// StreamMaintenanceError represents an error when the stream is under maintenance.
+	StreamMaintenanceError struct {
+		StreamError
+		time.Duration
+	}
+	// StreamClosedByExchangeError represents an error when the stream is closed by the exchange.
+	StreamClosedByExchangeError struct{ StreamError }
+
+	// StreamUnavailableError represents an error when the stream is (currently) unavailable.
+	StreamUnavailableError struct{ StreamError }
 )
