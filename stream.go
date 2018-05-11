@@ -6,9 +6,10 @@ import (
 
 // StreamConfig defines the configuration options for the stream
 type StreamConfig struct {
-	context.Context
-	Symbol
-	Params
+	Ctx       context.Context
+	Symbol    Symbol
+	Params    Params
+	Reconnect bool
 }
 
 // StreamOpt defines a function option to modify the streamconfiguration
@@ -31,7 +32,17 @@ func WithStreamSymbol(s Symbol) StreamOpt {
 // WithStreamContext set's the context for the stream
 func WithStreamContext(ctx context.Context) StreamOpt {
 	return func(sc *StreamConfig) {
-		sc.Context = ctx
+		sc.Ctx = ctx
+	}
+}
+
+// WithReconnect set's the reconnect toggle for the streamer.
+// This will handle the reconnection of the underlying websocket connection.
+// In case of an error when reconnecting it will retry 5 times with a exponential backoff.
+// Note that the `Stream` functions can still return an error when a abnormal closure happens.
+func WithReconnect(toggle bool) StreamOpt {
+	return func(sc *StreamConfig) {
+		sc.Reconnect = toggle
 	}
 }
 

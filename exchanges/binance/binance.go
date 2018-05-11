@@ -2,6 +2,7 @@ package binance
 
 import (
 	"fmt"
+	"io/ioutil"
 	"os"
 	"strconv"
 	"time"
@@ -13,6 +14,7 @@ import (
 	"github.com/barthr/cxtgo/resync"
 	"github.com/myesui/uuid"
 	"github.com/pkg/errors"
+	"github.com/sirupsen/logrus"
 	"go.uber.org/ratelimit"
 )
 
@@ -52,6 +54,7 @@ type Binance struct {
 	base   cxtgo.Base
 	client *binance.Client
 	http   *resty.Client
+	logger *logrus.Entry
 	once   resync.Once
 }
 
@@ -67,12 +70,20 @@ func New(opts ...cxtgo.BaseOpt) *Binance {
 	// Extend the base options with opts passed in
 	// The original opts can be overriden because they are executed as last in the chain
 	binanceOpts = append(binanceOpts, opts...)
-
 	ex := cxtgo.NewBase(binanceOpts...)
 	recvWindow, ok := ex.CustomParams.GetInt("recvWindow")
 	if !ok {
 		recvWindow = defaultRecvWindow
 	}
+	logger := logrus.New()
+	if ex.Debug {
+		logger.SetLevel(logrus.DebugLevel)
+		logger.Out = ex.DebugLog
+	} else {
+		logger.SetLevel(logrus.PanicLevel)
+		logger.Out = ioutil.Discard
+	}
+
 	// Create default binance struct with some default fields set
 	b := &Binance{
 		base:   ex,
@@ -91,6 +102,7 @@ func New(opts ...cxtgo.BaseOpt) *Binance {
 				"recvWindow":   strconv.Itoa(recvWindow),
 				"X-MBX-APIKEY": ex.APIKEY,
 			}),
+		logger: logger.WithField("cxtgo", "binance"),
 	}
 
 	// Set proxy for the request if one is provided as argument
