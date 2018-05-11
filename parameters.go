@@ -3,6 +3,22 @@ package cxtgo
 // Params are additional parameters which can be send for specific options per exchange
 type Params map[string]interface{}
 
+// UnionParams merges the parameters to one single parameter map.
+// It handles the element in a sequential way, this means that Params with the same key will override earlier values.
+// It always returns a valid Params maps, this map could be empty but never nil.
+func UnionParams(pp []Params) Params {
+	p := Params{}
+	if len(pp) == 0 {
+		return p
+	}
+	for _, params := range pp {
+		for key, value := range params {
+			p[key] = value
+		}
+	}
+	return p
+}
+
 // GetInt return key in params as an int. Indicating if the actual value was an int.
 func (p Params) GetInt(key string) (int, bool) {
 	v, ok := p[key].(int)

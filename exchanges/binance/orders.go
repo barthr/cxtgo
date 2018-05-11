@@ -24,19 +24,18 @@ func (b *Binance) LimitOrder(ctx context.Context, symbol cxtgo.Symbol, side cxtg
 			"timestamp":   strconv.FormatInt(time.Now().UnixNano(), 10),
 		})
 
-	if len(params) > 0 {
-		timeInForce, ok := params[0].GetString("timeInForce")
-		if ok {
-			req.SetQueryParam("timeInForce", timeInForce)
-		}
-		recvWindow, ok := params[0].GetInt("recvWindow")
-		if ok {
-			req.SetQueryParam("recvWindow", strconv.Itoa(recvWindow))
-		}
-		detail, ok := params[0].GetString("newOrderRespType")
-		if ok {
-			req.SetQueryParam("newOrderRespType", detail)
-		}
+	parameters := cxtgo.UnionParams(params)
+	timeInForce, ok := parameters.GetString("timeInForce")
+	if ok {
+		req.SetQueryParam("timeInForce", timeInForce)
+	}
+	recvWindow, ok := parameters.GetInt("recvWindow")
+	if ok {
+		req.SetQueryParam("recvWindow", strconv.Itoa(recvWindow))
+	}
+	detail, ok := parameters.GetString("newOrderRespType")
+	if ok {
+		req.SetQueryParam("newOrderRespType", detail)
 	}
 
 	resp, err := req.SetContext(ctx).Post("/api/v3/order")

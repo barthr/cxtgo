@@ -58,3 +58,26 @@ func TestParams_GetParameters(t *testing.T) {
 	assert.Equal("", invalid)
 
 }
+
+func TestUnionParams(t *testing.T) {
+	assert := assert.New(t)
+
+	params1 := Params{}
+	params2 := Params{}
+
+	combinedParams := []Params{params1, params2}
+
+	assert.Equal(Params{}, UnionParams(combinedParams))
+
+	params1["key"] = "value"
+	params2["key"] = 10
+
+	assert.Equal(Params{"key": 10}, UnionParams(combinedParams))
+
+	params1["key1"] = "value"
+	params2["key2"] = 10
+
+	assert.Equal(Params{"key1": "value", "key2": 10, "key": 10}, UnionParams(combinedParams))
+
+	assert.Equal(Params{}, UnionParams(nil))
+}
