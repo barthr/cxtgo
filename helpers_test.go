@@ -50,9 +50,9 @@ func TestAmountToLotSize(t *testing.T) {
 			args: args{
 				lot:       0.0010000,
 				precision: 8,
-				amount:    11232821093480213.31232419283240912834434,
+				amount:    14000.14000,
 			},
-			want: 11232821093480213.3123,
+			want: 14000.140,
 		},
 	}
 	for _, tt := range tests {

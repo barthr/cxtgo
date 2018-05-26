@@ -87,6 +87,13 @@ func WithProxyURL(proxy string) BaseOpt {
 	}
 }
 
+// WithBaseURL sets the base url for the exchange
+func WithBaseURL(url string) BaseOpt {
+	return func(b *Base) {
+		b.BaseURL = url
+	}
+}
+
 // NewBase returns a new base exchange with the given opts applied.
 func NewBase(opts ...BaseOpt) Base {
 	b := Base{
@@ -108,6 +115,7 @@ type Base struct {
 	Debug        bool
 	DebugLog     io.Writer
 	UserAgent    string
+	BaseURL      string
 	Proxy        string
 	APIKEY       string
 	APISecret    string

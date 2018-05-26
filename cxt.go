@@ -87,7 +87,6 @@ type StreamingAPI interface {
 // Exchange defines all the api calls for an exchange.
 type Exchange interface {
 	Info() Base
-	Reset()
 
 	PublicAPI
 	AccountAPI

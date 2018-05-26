@@ -5,13 +5,12 @@ import (
 	"io/ioutil"
 	"os"
 	"strconv"
+	"sync"
 	"time"
 
 	"github.com/go-resty/resty"
 
-	binance "github.com/adshao/go-binance"
 	"github.com/barthr/cxtgo"
-	"github.com/barthr/cxtgo/resync"
 	"github.com/myesui/uuid"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
@@ -51,11 +50,11 @@ const (
 
 // Binance is the binance implementation for cxtgo interface
 type Binance struct {
-	base   cxtgo.Base
-	client *binance.Client
+	base cxtgo.Base
+	once sync.Once
+
 	http   *resty.Client
 	logger *logrus.Entry
-	once   resync.Once
 }
 
 // New returns an instance of the binance exchange, with some defaults set.
@@ -66,6 +65,7 @@ func New(opts ...cxtgo.BaseOpt) *Binance {
 		cxtgo.WithUserAgent("cxtgo/0.1"),
 		cxtgo.WithRatelimit(ratelimit.New(binanceReqPerMin / 60)),
 		cxtgo.WithDebuglogger(os.Stdout),
+		cxtgo.WithBaseURL(baseURL),
 	}
 	// Extend the base options with opts passed in
 	// The original opts can be overriden because they are executed as last in the chain
@@ -86,15 +86,14 @@ func New(opts ...cxtgo.BaseOpt) *Binance {
 
 	// Create default binance struct with some default fields set
 	b := &Binance{
-		base:   ex,
-		client: binance.NewClient(ex.APIKEY, ex.APISecret),
-		once:   resync.Once{},
+		base: ex,
+		once: sync.Once{},
 		http: resty.New().
 			SetDebug(ex.Debug).
 			SetLogPrefix("cxtgo.binance").
 			SetLogger(ex.DebugLog).
 			SetTimeout(time.Second*10).
-			SetHostURL(baseURL).
+			SetHostURL(ex.BaseURL).
 			SetError(&apiError{}).
 			SetHeader("User-Agent", ex.UserAgent).
 			SetHeader("Content-Type", "application/json").
@@ -116,11 +115,6 @@ func New(opts ...cxtgo.BaseOpt) *Binance {
 // Info returns the base info for the binance exchange
 func (b *Binance) Info() cxtgo.Base {
 	return b.base
-}
-
-// Reset resets the resync.Once, this allows the exchange to reload the related symbol info.
-func (b *Binance) Reset() {
-	b.once.Reset()
 }
 
 // AmountToLots converts the given amount to the lot sized amount.
