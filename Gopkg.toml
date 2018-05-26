@@ -26,10 +26,6 @@
 
 
 [[constraint]]
-  name = "github.com/adshao/go-binance"
-  version = "1.1.1"
-
-[[constraint]]
   name = "github.com/barthr/set"
   version = "1.0.0"
 
