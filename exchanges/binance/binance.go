@@ -8,11 +8,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/go-resty/resty"
-
 	"github.com/barthr/cxtgo"
-	"github.com/myesui/uuid"
+	"github.com/go-resty/resty"
 	"github.com/pkg/errors"
+	"github.com/satori/go.uuid"
 	"github.com/sirupsen/logrus"
 	"go.uber.org/ratelimit"
 )
@@ -60,7 +59,7 @@ type Binance struct {
 // New returns an instance of the binance exchange, with some defaults set.
 func New(opts ...cxtgo.BaseOpt) *Binance {
 	binanceOpts := []cxtgo.BaseOpt{
-		cxtgo.WithID(uuid.NewV4().String()),
+		cxtgo.WithID(uuid.Must(uuid.NewV4()).String()),
 		cxtgo.WithName("Binance"),
 		cxtgo.WithUserAgent("cxtgo/0.1"),
 		cxtgo.WithRatelimit(ratelimit.New(binanceReqPerMin / 60)),
