@@ -43,6 +43,7 @@ func WrapError(parent error, exchange string, cause error) error {
 type (
 	// SymbolNotFoundError defines an error for when executing an action on the exchange for a symbol which is not found.
 	SymbolNotFoundError struct{ BaseError }
+
 	// NetworkError defines a network error from the exchange.
 	NetworkError struct{ BaseError }
 
@@ -63,6 +64,7 @@ type (
 
 	// OrderNotFoundError defines an error when the requested order is not found.
 	OrderNotFoundError struct{ BaseError }
+
 	// ExchangeNotAvailableError defines an error for when the exchange is not available.
 	ExchangeNotAvailableError struct{ BaseError }
 )

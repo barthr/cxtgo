@@ -34,6 +34,7 @@ func (b *Binance) StreamTicker(onUpdate func(t cxtgo.Ticker), onError func(err e
 			if !config.Reconnect {
 				return cxtgo.WrapError(cxtgo.StreamUnavailableError{}, "binance", err)
 			}
+			maxConnectRetries++
 		}
 		for {
 			msgType, _, err := conn.ReadMessage()
@@ -53,7 +54,6 @@ func (b *Binance) StreamTicker(onUpdate func(t cxtgo.Ticker), onError func(err e
 		if !config.Reconnect {
 			return cxtgo.WrapError(cxtgo.StreamClosedByExchangeError{}, "binance", err)
 		}
-		maxConnectRetries++
 	}
 	return cxtgo.WrapError(cxtgo.StreamClosedByExchangeError{}, "binance", nil)
 }

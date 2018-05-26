@@ -9,10 +9,18 @@ const (
 	Version = 0.1
 )
 
+// NopLotter empty lotter which returns the amount instead of lot sizing.
+type NopLotter struct{}
+
+// AmountToLots is a NopLotter, when there is no lotter available
+func (NopLotter) AmountToLots(s Symbol, amount float64) float64 {
+	return amount
+}
+
 // Lotter is the interface for converting amounts to lot sizes.
 type Lotter interface {
 	// AmountToLots takes in an amount and convert it to a lot sized amount.
-	AmountToLots(Symbol, float64) float64
+	AmountToLots(s Symbol, amount float64) float64
 }
 
 // PublicAPI are the public available calls for an exchange.

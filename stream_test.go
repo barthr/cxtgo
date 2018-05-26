@@ -27,5 +27,5 @@ func TestStreamOpt(t *testing.T) {
 	}
 	r.Equal(params, config.Params)
 	r.Equal(symbol, config.Symbol)
-	r.Equal(ctx, config.Context)
+	r.Equal(ctx, config.Ctx)
 }
