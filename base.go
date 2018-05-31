@@ -39,6 +39,7 @@ func WithRatelimit(rl ratelimit.Limiter) BaseOpt {
 }
 
 // WithID sets the id for the exchange.
+// This can be used to identify different instances of the same exchange.
 func WithID(id string) BaseOpt {
 	return func(b *Base) {
 		b.ID = id
