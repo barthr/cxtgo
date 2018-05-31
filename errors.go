@@ -49,6 +49,27 @@ const (
 	StreamUnavailable                       // No wrapped key for user with read access.
 )
 
+func (ek ErrorKind) String() string {
+	kind, ok := map[ErrorKind]string{
+		Other:                  "other error",
+		SymbolNotFound:         "symbol not found",
+		Network:                "network error",
+		Conversion:             "conversion error",
+		NotSupported:           "operation not supported",
+		Authentication:         "authentication failure",
+		InsufficientFunds:      "insufficient funds",
+		InvalidOrder:           "order is invalid",
+		OrderNotFound:          "order was not found",
+		ExchangeNotAvailable:   "error exchange is not available",
+		StreamClosedByExchange: "stream is closed by exchange",
+		StreamUnavailable:      "stream is currently unavailable",
+	}[ek]
+	if !ok {
+		kind = "unknown error kind"
+	}
+	return kind
+}
+
 // // BaseError is the base error class for errors from cxtgo
 // type BaseError struct {
 // 	Exchange string
