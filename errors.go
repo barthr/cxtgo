@@ -19,7 +19,9 @@ func (ee BaseError) Error() string {
 func WrapError(parent error, exchange string, cause error) error {
 	switch parent.(type) {
 	case SymbolNotFoundError:
-		return SymbolNotFoundError{BaseError{exchange, cause}}
+		return SymbolNotFoundError{
+			BaseError: BaseError{exchange, cause},
+		}
 	case NetworkError:
 		return NetworkError{BaseError{exchange, cause}}
 	case ConversionError:
@@ -42,7 +44,10 @@ func WrapError(parent error, exchange string, cause error) error {
 
 type (
 	// SymbolNotFoundError defines an error for when executing an action on the exchange for a symbol which is not found.
-	SymbolNotFoundError struct{ BaseError }
+	SymbolNotFoundError struct {
+		BaseError
+		Symbol
+	}
 
 	// NetworkError defines a network error from the exchange.
 	NetworkError struct{ BaseError }
@@ -63,7 +68,9 @@ type (
 	InvalidOrderError struct{ BaseError }
 
 	// OrderNotFoundError defines an error when the requested order is not found.
-	OrderNotFoundError struct{ BaseError }
+	OrderNotFoundError struct {
+		BaseError
+	}
 
 	// ExchangeNotAvailableError defines an error for when the exchange is not available.
 	ExchangeNotAvailableError struct{ BaseError }
