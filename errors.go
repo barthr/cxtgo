@@ -1,12 +1,16 @@
 package cxtgo
 
+import (
+	"fmt"
+)
+
 // Error is the type that implements the error interface.
 // It contains a number of fields, each of different type.
 // An Error value may leave some values unset.
 // Adapted from https://github.com/upspin/upspin/blob/master/errors/errors.go
 type Error struct {
 	// Exchange is the name of the exchange being used.
-	Exchange string
+	Exchange ExchangeName
 	// Op is the operation being performed, usually the name of the method
 	Op Op
 	// Kind is the class of error, as defined by the error kinds.
@@ -14,6 +18,10 @@ type Error struct {
 	Kind ErrorKind
 	// The underlying error that triggered this one, if any.
 	Err error
+}
+
+func (e *Error) Error() string {
+	return ""
 }
 
 // IsZero returns if the error is a zero error.
@@ -68,6 +76,29 @@ func (ek ErrorKind) String() string {
 		kind = "unknown error kind"
 	}
 	return kind
+}
+
+// E is the standard error function for creating errors in cxtgo.
+func E(args ...interface{}) error {
+	if len(args) == 0 {
+		panic("call to cxtgo.E(...) with no arguments")
+	}
+	e := &Error{}
+	for _, arg := range args {
+		switch arg := arg.(type) {
+		case ExchangeName:
+			e.Exchange = arg
+		case Op:
+			e.Op = arg
+		case ErrorKind:
+			e.Kind = arg
+		case error:
+			e.Err = arg
+		default:
+			return fmt.Errorf("unknown type %T, value %v in error call", arg, arg)
+		}
+	}
+	return e
 }
 
 // // BaseError is the base error class for errors from cxtgo

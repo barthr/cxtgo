@@ -3,7 +3,7 @@ package cxtgo
 import "time"
 
 // Side defines the side for the order (f.e. Sell or Buy).
-type Side int
+type Side uint8
 
 const (
 	// Unknown side for the zero value of side.
@@ -25,7 +25,7 @@ func (s Side) String() string {
 }
 
 // OrderStatus represents the state of an order.
-type OrderStatus int
+type OrderStatus uint8
 
 const (
 	// UnknownStatus status for the zero value of order status.
@@ -50,7 +50,7 @@ func (os OrderStatus) String() string {
 }
 
 // OrderType represents the type of the order.
-type OrderType int
+type OrderType uint8
 
 const (
 	// UnknownOrderType represents the zero value of the order type.

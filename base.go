@@ -6,6 +6,9 @@ import (
 	"go.uber.org/ratelimit"
 )
 
+// ExchangeName identifies the name of the exchange.
+type ExchangeName string
+
 // BaseOpt mutates the settings for the exchange.
 type BaseOpt func(*Base)
 
