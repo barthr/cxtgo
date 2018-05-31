@@ -9,6 +9,14 @@ const (
 	Version = 0.1
 )
 
+var (
+	exchanges = [...]ExchangeName{
+		"binance",
+		"bitmex",
+		"hitbtc",
+	}
+)
+
 // NopLotter empty lotter which returns the amount instead of lot sizing.
 type NopLotter struct{}
 
