@@ -7,12 +7,23 @@ package cxtgo
 type Error struct {
 	// Exchange is the name of the exchange being used.
 	Exchange string
+	// Op is the operation being performed, usually the name of the method
+	Op Op
 	// Kind is the class of error, as defined by the error kinds.
 	// Other is used if its class is unknown or irrelevant.
 	Kind ErrorKind
 	// The underlying error that triggered this one, if any.
 	Err error
 }
+
+// IsZero returns if the error is a zero error.
+func (e *Error) IsZero() bool {
+	return e.Exchange == "" && e.Kind == 0 && e.Err == nil
+}
+
+// Op describes an operation, usually as the package and method,
+// such as "exchanges/binance.Ticker".
+type Op string
 
 // ErrorKind defines the kind of error this is.
 type ErrorKind uint8
@@ -25,7 +36,7 @@ type ErrorKind uint8
 // New items must be added only to the end.
 const (
 	Other                  ErrorKind = iota // Unclassified error. This value is not printed in the error message.
-	SymbolNotFound                          // Invalid operation for this type of item.
+	SymbolNotFound                          // Kind for when executing an action on the exchange for a symbol which is not found.
 	Network                                 // Permission denied.
 	Conversion                              // External I/O error such as network failure.
 	NotSupported                            // Item already exists.
