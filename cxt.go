@@ -40,7 +40,7 @@ type PublicAPI interface {
 	// Ticker returns the ticker information for a given symbol.
 	Ticker(ctx context.Context, symbol Symbol, params ...Params) (Ticker, error)
 	// Tickers returns all the ticker information for the given symbols.
-	Tickers(ctx context.Context, symbols []Symbol, params ...Params) (Tickers, error)
+	Tickers(ctx context.Context, symbols Symbols, params ...Params) (Tickers, error)
 	// Orderbook returns order book information for a given symbol.
 	OrderBook(ctx context.Context, symbol Symbol, params ...Params) (Orderbook, error)
 	// OHLCV returns the Open high low close volume infromation for a symbol.
