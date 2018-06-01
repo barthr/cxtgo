@@ -54,7 +54,7 @@ func TestE(t *testing.T) {
 	}
 	for name, test := range tt {
 		t.Run(name, func(t *testing.T) {
-			output := E(test.in...)
+			output := Err(test.in...)
 			assert.Equal(t, test.expected, output)
 		})
 	}

@@ -97,10 +97,10 @@ func (ek ErrorKind) String() string {
 	return kind
 }
 
-// E is the standard error function for creating errors in cxtgo.
-func E(args ...interface{}) error {
+// Err is the standard error function for creating errors in cxtgo.
+func Err(args ...interface{}) error {
 	if len(args) == 0 {
-		panic("call to cxtgo.E(...) with no arguments")
+		panic("call to cxtgo.Err(...) with no arguments")
 	}
 	e := &Error{}
 	for _, arg := range args {

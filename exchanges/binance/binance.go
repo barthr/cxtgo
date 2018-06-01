@@ -128,7 +128,7 @@ func (b *Binance) AmountToLots(s cxtgo.Symbol, amount float64) (float64, error) 
 	}
 	info, ok := b.base.Market[s]
 	if !ok {
-		return .0, cxtgo.E(cxtgo.ExchangeName("binance"), cxtgo.Op("lotter.AmountToLots"), cxtgo.SymbolNotFound, errors.New(s.String()))
+		return .0, cxtgo.Err(cxtgo.ExchangeName("binance"), cxtgo.Op("lotter.AmountToLots"), cxtgo.SymbolNotFound, errors.New(s.String()))
 	}
 	return cxtgo.AmountToLotSize(info.Lot, info.Precision.Amount, amount), nil
 }
