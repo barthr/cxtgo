@@ -48,8 +48,8 @@ func (e *Error) Error() string {
 	return b.String()
 }
 
-// Op describes an operation, usually as the package and method,
-// such as "exchanges/binance.Ticker".
+// Op describes an operation, usually as the interface and the respective method,
+// such as "public.Ticker" or "accountAPI.Balance".
 type Op string
 
 // ErrorKind defines the kind of error this is.
@@ -64,16 +64,16 @@ type ErrorKind uint8
 const (
 	Other                  ErrorKind = iota // Unclassified error. This value is not printed in the error message.
 	SymbolNotFound                          // Kind for when executing an action on the exchange for a symbol which is not found.
-	Network                                 // Permission denied.
-	Conversion                              // External I/O error such as network failure.
-	NotSupported                            // Item already exists.
-	Authentication                          // Item does not exist.
-	InsufficientFunds                       // Item is a directory.
-	InvalidOrder                            // Item is not a directory.
-	OrderNotFound                           // Directory not empty.
-	ExchangeNotAvailable                    // Information withheld.
-	StreamClosedByExchange                  // Internal error or inconsistency.
-	StreamUnavailable                       // No wrapped key for user with read access.
+	Network                                 // Kind for when there are Network problems.
+	Conversion                              // Kind for when there is a conversion error.
+	NotSupported                            // Kind for when an operation is not supported by the exchange.
+	Authentication                          // Kind for when the authentication to the exchange fails.
+	InsufficientFunds                       // Kind for when there are not enough funds in the account to execute the action.
+	InvalidOrder                            // Kind for when an order is submitted which doesn't pass the criteria from the exchange.
+	OrderNotFound                           // Kind for when an order is not found on the exchange.
+	ExchangeNotAvailable                    // Kind for when the given exchange is not available.
+	StreamClosedByExchange                  // Kind for when the stream has been closed by the exchange.
+	StreamUnavailable                       // Kind for when the stream from the exchange is currently unavailable.
 )
 
 func (ek ErrorKind) String() string {

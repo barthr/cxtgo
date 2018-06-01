@@ -4,11 +4,11 @@ import (
 	"testing"
 
 	"github.com/barthr/cxtgo"
-	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestBinance_AmountToLots(t *testing.T) {
-	assert := assert.New(t)
+	assert := require.New(t)
 
 	binance := New()
 
