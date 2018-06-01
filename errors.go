@@ -117,17 +117,16 @@ func E(args ...interface{}) error {
 		case ErrorKind:
 			e.Kind = arg
 		case string:
-			// most likely an Op
-			if strings.Contains(arg, "exchanges") {
-				e.Op = Op(arg)
-			} else {
-				// check available exchanges and pick the correct one
-				for _, exchange := range exchanges {
-					if ExchangeName(arg) == exchange {
-						e.Exchange = exchange
-						break
-					}
+			var found bool
+			// check available exchanges and pick the correct one
+			for _, exchange := range exchanges {
+				if ExchangeName(arg) == exchange {
+					e.Exchange = exchange
+					found = true
 				}
+			}
+			if !found {
+				e.Op = Op(arg)
 			}
 		case *Error:
 			// Make a copy
