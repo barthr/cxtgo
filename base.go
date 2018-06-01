@@ -9,6 +9,9 @@ import (
 // ExchangeName identifies the name of the exchange.
 type ExchangeName string
 
+// ExchangeID identifies an id for an exchange.
+type ExchangeID string
+
 // BaseOpt mutates the settings for the exchange.
 type BaseOpt func(*Base)
 
@@ -28,7 +31,7 @@ func WithIncludeRaw(toggle bool) BaseOpt {
 }
 
 // WithName sets the name for the exchange.
-func WithName(name string) BaseOpt {
+func WithName(name ExchangeName) BaseOpt {
 	return func(b *Base) {
 		b.Name = name
 	}
@@ -43,7 +46,7 @@ func WithRatelimit(rl ratelimit.Limiter) BaseOpt {
 
 // WithID sets the id for the exchange.
 // This can be used to identify different instances of the same exchange.
-func WithID(id string) BaseOpt {
+func WithID(id ExchangeID) BaseOpt {
 	return func(b *Base) {
 		b.ID = id
 	}
@@ -113,8 +116,8 @@ func NewBase(opts ...BaseOpt) Base {
 
 // Base is the base information and methods for an exchange.
 type Base struct {
-	ID           string
-	Name         string
+	ID           ExchangeID
+	Name         ExchangeName
 	Raw          bool
 	Debug        bool
 	DebugLog     io.Writer

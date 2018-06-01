@@ -5,8 +5,9 @@ import (
 	"net/http"
 	"testing"
 
+	"errors"
+
 	"github.com/barthr/cxtgo"
-	"github.com/pkg/errors"
 	"github.com/stretchr/testify/require"
 	httpmock "gopkg.in/jarcoal/httpmock.v1"
 )

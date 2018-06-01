@@ -22,11 +22,34 @@ type Error struct {
 }
 
 func (e *Error) Error() string {
-	return ""
+	b := new(strings.Builder)
+	if e.Op != "" {
+		pad(b, ": ")
+		b.WriteString("(")
+		b.WriteString(string(e.Op))
+		b.WriteString(")")
+	}
+	if e.Exchange != "" {
+		pad(b, ": ")
+		b.WriteString("exchange ")
+		b.WriteString(string(e.Exchange))
+	}
+	if e.Kind != 0 {
+		pad(b, ": ")
+		b.WriteString(e.Kind.String())
+	}
+	if e.Err != nil {
+		pad(b, ": ")
+		b.WriteString(e.Err.Error())
+	}
+	if b.Len() == 0 {
+		return "no error"
+	}
+	return b.String()
 }
 
 // IsZero returns if the error is a zero error.
-func (e *Error) IsZero() bool {
+func (e *Error) isZero() bool {
 	return e.Exchange == "" && e.Kind == 0 && e.Err == nil
 }
 
@@ -117,6 +140,14 @@ func E(args ...interface{}) error {
 		}
 	}
 	return e
+}
+
+// pad appends str to the buffer if the buffer already has some data.
+func pad(b *strings.Builder, str string) {
+	if b.Len() == 0 {
+		return
+	}
+	b.WriteString(str)
 }
 
 // Is reports whether err is an *Error of the given Kind.

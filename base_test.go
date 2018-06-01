@@ -13,8 +13,8 @@ func TestBaseOpts(t *testing.T) {
 
 	params := Params{"t": "t"}
 	raw := true
-	name := "test"
-	id := "10"
+	name := ExchangeName("test")
+	id := ExchangeID("10")
 	userAgent := "test"
 	rl := ratelimit.New(2)
 	key := "key"

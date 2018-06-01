@@ -19,10 +19,8 @@ func main() {
 
 	market, err := binance.Markets(context.Background())
 
-	switch err.(type) {
-	case cxtgo.NetworkError:
-		fmt.Println("network error")
-	}
 	info := market[cxtgo.NewSymbol("ETH", "BTC")]
 	fmt.Printf("%v\n", info.Precision.Amount)
+
+	fmt.Println(err)
 }

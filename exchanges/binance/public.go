@@ -2,6 +2,7 @@ package binance
 
 import (
 	"context"
+	"errors"
 
 	"github.com/barthr/cxtgo"
 )
@@ -9,7 +10,7 @@ import (
 // Markets loads all the markets from binance
 func (b *Binance) Markets(ctx context.Context, params ...cxtgo.Params) (cxtgo.MarketInfos, error) {
 	b.base.Ratelimit.Take()
-	return nil, nil
+	return nil, cxtgo.E(cxtgo.ExchangeName("binance"), cxtgo.Op("public.Markets"), errors.New("it's nothing"), cxtgo.ExchangeNotAvailable)
 }
 
 func (b *Binance) initMarkets() error {

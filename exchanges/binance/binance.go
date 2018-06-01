@@ -11,7 +11,6 @@ import (
 	"github.com/barthr/cxtgo"
 	"github.com/go-resty/resty"
 
-	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 
 	"go.uber.org/ratelimit"
@@ -124,7 +123,7 @@ func (b *Binance) Info() cxtgo.Base {
 // Returns the zero value of float64 when the symbol is not found in the marketinfo.
 func (b *Binance) AmountToLots(s cxtgo.Symbol, amount float64) (float64, error) {
 	if err := b.initMarkets(); err != nil {
-		return 0, errors.WithStack(err)
+		return 0, err
 	}
 	info, ok := b.base.Market[s]
 	if !ok {
