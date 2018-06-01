@@ -48,11 +48,6 @@ func (e *Error) Error() string {
 	return b.String()
 }
 
-// IsZero returns if the error is a zero error.
-func (e *Error) isZero() bool {
-	return e.Exchange == "" && e.Kind == 0 && e.Err == nil
-}
-
 // Op describes an operation, usually as the package and method,
 // such as "exchanges/binance.Ticker".
 type Op string
