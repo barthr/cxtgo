@@ -10,10 +10,11 @@ import (
 
 func (b *Binance) LimitOrder(ctx context.Context, symbol cxtgo.Symbol, side cxtgo.Side, offer cxtgo.Offer, params ...cxtgo.Params) (cxtgo.Order, error) {
 	if err := b.initMarkets(); err != nil {
-		return cxtgo.Order{}, cxtgo.Err()
+		return cxtgo.Order{}, err
 	}
 	req := b.http.R().
 		SetResult(&createOrderResponse{}).
+		SetError(&apiError{}).
 		SetQueryParams(map[string]string{
 			"symbol":      symbol.String(),
 			"side":        side.String(),
@@ -40,17 +41,9 @@ func (b *Binance) LimitOrder(ctx context.Context, symbol cxtgo.Symbol, side cxtg
 
 	resp, err := req.SetContext(ctx).Post("/api/v3/order")
 	if err != nil {
-		binanceErr, ok := resp.Error().(*apiError)
-		if ok {
-			switch binanceErr.Code {
-			case disconnected:
-				return cxtgo.Order{}, cxtgo.Err(cxtgo.ExchangeName("binance"), cxtgo.Op("orderAPI.LimitOrder"), cxtgo.ExchangeNotAvailable, err)
-			}
-		}
-		return cxtgo.Order{}, cxtgo.Err(cxtgo.ExchangeName("binance"), cxtgo.Op("orderAPI.LimitOrder"), cxtgo.ExchangeNotAvailable, err)
+		return cxtgo.Order{}, handleError(err, "orderAPI.LimitOrder")
 	}
 	order := resp.Result().(*createOrderResponse)
-
 	var raw []byte
 	if b.base.Raw {
 		raw = resp.Body()

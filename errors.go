@@ -69,6 +69,7 @@ const (
 	NotSupported                            // Kind for when an operation is not supported by the exchange.
 	Authentication                          // Kind for when the authentication to the exchange fails.
 	InsufficientFunds                       // Kind for when there are not enough funds in the account to execute the action.
+	Ratelimited                             // Kind for when there are not enough funds in the account to execute the action.
 	InvalidOrder                            // Kind for when an order is submitted which doesn't pass the criteria from the exchange.
 	OrderNotFound                           // Kind for when an order is not found on the exchange.
 	ExchangeNotAvailable                    // Kind for when the given exchange is not available.
@@ -85,6 +86,7 @@ func (ek ErrorKind) String() string {
 		NotSupported:           "operation not supported",
 		Authentication:         "authentication failure",
 		InsufficientFunds:      "insufficient funds",
+		Ratelimited:            "rate limit reached",
 		InvalidOrder:           "order is invalid",
 		OrderNotFound:          "order was not found",
 		ExchangeNotAvailable:   "error exchange is not available",

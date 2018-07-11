@@ -45,7 +45,7 @@ const (
 	serviceShuttingDown     errorCode = -1016
 	unsupportedOperation    errorCode = -1020
 	invalidTimestamp        errorCode = -1021
-	invalidSIgnature        errorCode = -1022
+	invalidSignature        errorCode = -1022
 )
 
 // Binance is the binance implementation for cxtgo interface
@@ -136,4 +136,22 @@ func (b *Binance) AmountToLots(s cxtgo.Symbol, amount float64) (float64, error) 
 type apiError struct {
 	Code    errorCode `json:"code,omitempty"`
 	Message string    `json:"message,omitempty"`
+}
+
+func handleError(err interface{}, op string) error {
+	v, ok := err.(*apiError)
+	if !ok {
+		return cxtgo.Err(cxtgo.ExchangeName("binance"), cxtgo.Op(op), cxtgo.ExchangeNotAvailable, err)
+	}
+	var cause error
+	errKind := cxtgo.Other
+	switch v.Code {
+	case disconnected, timeOut:
+		errKind = cxtgo.Network
+	case unauthorized:
+		errKind = cxtgo.Authentication
+	case tooManyRequests:
+		errKind = cxtgo.Ratelimited
+	}
+	return cxtgo.Err(cxtgo.ExchangeName("binance"), cxtgo.Op(op), cause, errKind)
 }
