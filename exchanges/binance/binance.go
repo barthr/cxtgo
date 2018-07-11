@@ -6,7 +6,6 @@ import (
 	"io/ioutil"
 	"os"
 	"strconv"
-	"sync"
 	"time"
 
 	"github.com/barthr/cxtgo"
@@ -27,6 +26,7 @@ var (
 	errSymbolNotFound = func(s cxtgo.Symbol) error {
 		return fmt.Errorf("symbol %v is not found", s.String())
 	}
+	errMarketsNotSet = errors.New("markets not set")
 )
 
 // see: https://github.com/binance-exchange/binance-official-api-docs/blob/master/errors.md
@@ -51,7 +51,6 @@ const (
 // Binance is the binance implementation for cxtgo interface
 type Binance struct {
 	base cxtgo.Base
-	once sync.Once
 
 	http   *resty.Client
 	logger *logrus.Entry
@@ -86,7 +85,6 @@ func New(opts ...cxtgo.BaseOpt) *Binance {
 	// Create default binance struct with some default fields set
 	b := &Binance{
 		base: ex,
-		once: sync.Once{},
 		http: resty.New().
 			SetDebug(ex.Debug).
 			SetLogPrefix("cxtgo.binance").
@@ -118,19 +116,6 @@ func New(opts ...cxtgo.BaseOpt) *Binance {
 // Info returns the base info for the binance exchange
 func (b *Binance) Info() cxtgo.Base {
 	return b.base
-}
-
-// AmountToLots converts the given amount to the lot sized amount.
-// Returns the zero value of float64 when the symbol is not found in the marketinfo.
-func (b *Binance) AmountToLots(s cxtgo.Symbol, amount float64) (float64, error) {
-	if err := b.initMarkets(); err != nil {
-		return 0, err
-	}
-	info, ok := b.base.Market[s]
-	if !ok {
-		return .0, cxtgo.Err(cxtgo.ExchangeName("binance"), cxtgo.Op("lotter.AmountToLots"), cxtgo.SymbolNotFound, errors.New(s.String()))
-	}
-	return cxtgo.AmountToLotSize(info.Lot, info.Precision.Amount, amount), nil
 }
 
 type apiError struct {

@@ -2,6 +2,7 @@ package cxtgo
 
 import (
 	"context"
+	"math"
 )
 
 const (
@@ -17,18 +18,9 @@ var (
 	}
 )
 
-// NopLotter empty lotter which returns the amount instead of lot sizing.
-type NopLotter struct{}
-
-// AmountToLots is a NopLotter, when there is no lotter available
-func (NopLotter) AmountToLots(s Symbol, amount float64) float64 {
-	return amount
-}
-
-// Lotter is the interface for converting amounts to lot sizes.
-type Lotter interface {
-	// AmountToLots takes in an amount and convert it to a lot sized amount.
-	AmountToLots(s Symbol, amount float64) float64
+// AmountToLots converts an amount to a lot sized amount according to the precisions in `MarketInfo`.
+func AmountToLots(info MarketInfo, amount float64) float64 {
+	return math.Trunc(math.Floor(amount/info.Lot)*info.Lot*math.Pow10(info.Precision.Amount)) / math.Pow10(info.Precision.Amount)
 }
 
 // PublicAPI are the public available calls for an exchange.

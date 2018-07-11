@@ -6,58 +6,57 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestAmountToLotSize(t *testing.T) {
-	assert := assert.New(t)
-	type args struct {
-		lot       float64
-		precision int
-		amount    float64
-	}
-	tests := []struct {
-		name string
-		args args
-		want float64
+func TestAmountToLot(t *testing.T) {
+	var tt = map[string]struct {
+		info     MarketInfo
+		amount   float64
+		expected float64
 	}{
-		{
-			name: "test with lot of zero and invalid amount",
-			args: args{
-				lot:       0.00100000,
-				precision: 8,
-				amount:    0.00010000,
+		"Test with lot of zero and invalid amount": {
+			info: MarketInfo{
+				Lot: 0.00100000,
+				Precision: MarketPrecision{
+					Amount: 8,
+				},
 			},
-			want: 0,
+			amount:   0.00010000,
+			expected: 0,
 		},
-		{
-			name: "test with lot",
-			args: args{
-				lot:       0.00100000,
-				precision: 3,
-				amount:    1.39,
+		"Test with lot": {
+			info: MarketInfo{
+				Lot: 0.00100000,
+				Precision: MarketPrecision{
+					Amount: 3,
+				},
 			},
-			want: 1.389,
+			amount:   1.39,
+			expected: 1.389,
 		},
-		{
-			name: "test with big decimal",
-			args: args{
-				lot:       0.00100000,
-				precision: 8,
-				amount:    11.31232419283240912834434,
+		"Test with big decimal": {
+			info: MarketInfo{
+				Lot: 0.00100000,
+				Precision: MarketPrecision{
+					Amount: 8,
+				},
 			},
-			want: 11.312,
+			amount:   11.31232419283240912834434,
+			expected: 11.312,
 		},
-		{
-			name: "test with big number",
-			args: args{
-				lot:       0.0010000,
-				precision: 8,
-				amount:    14000.14000,
+		"Test with big number": {
+			info: MarketInfo{
+				Lot: 0.0010000,
+				Precision: MarketPrecision{
+					Amount: 8,
+				},
 			},
-			want: 14000.140,
+			amount:   14000.14000,
+			expected: 14000.140,
 		},
 	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			assert.Equal(tt.want, AmountToLotSize(tt.args.lot, tt.args.precision, tt.args.amount))
+	for name, test := range tt {
+		t.Run(name, func(t *testing.T) {
+			output := AmountToLots(test.info, test.amount)
+			assert.Equal(t, test.expected, output)
 		})
 	}
 }
