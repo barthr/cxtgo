@@ -9,12 +9,22 @@ import (
 )
 
 func TestBinance_LoadMarkets(t *testing.T) {
-	assert := assert.New(t)
-
-	binance := New()
-	info, err := binance.Markets(context.Background())
-
-	assert.NoError(err, "err should be empty when loading markets")
-	assert.NotNil(info, "info should be filled when loading markets")
-	assert.Contains(info, cxtgo.NewSymbol("ETH", "BTC"), "info should contain eth btc")
+	var tt = map[string]struct {
+		params     cxtgo.Params
+		wantErr    bool
+		wantOutput cxtgo.MarketInfos
+	}{
+		"Test with erroring exchange": {
+			params:     cxtgo.Params{},
+			wantErr:    true,
+			wantOutput: nil,
+		},
+	}
+	for name, test := range tt {
+		t.Run(name, func(t *testing.T) {
+			output, err := New().Markets(context.Background(), test.params)
+			assert.Equal(t, test.wantErr, err != nil)
+			assert.Equal(t, output, test.wantOutput)
+		})
+	}
 }
