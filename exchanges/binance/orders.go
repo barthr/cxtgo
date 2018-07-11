@@ -9,9 +9,6 @@ import (
 )
 
 func (b *Binance) LimitOrder(ctx context.Context, symbol cxtgo.Symbol, side cxtgo.Side, offer cxtgo.Offer, params ...cxtgo.Params) (cxtgo.Order, error) {
-	if err := b.initMarkets(); err != nil {
-		return cxtgo.Order{}, err
-	}
 	req := b.http.R().
 		SetResult(&createOrderResponse{}).
 		SetError(&apiError{}).
@@ -65,51 +62,30 @@ func (b *Binance) LimitOrder(ctx context.Context, symbol cxtgo.Symbol, side cxtg
 }
 
 func (b *Binance) MarketOrder(ctx context.Context) error {
-	if err := b.initMarkets(); err != nil {
-		return err
-	}
 	panic("not implemented")
 }
 
 func (b *Binance) CancelOrder(ctx context.Context) error {
-	if err := b.initMarkets(); err != nil {
-		return err
-	}
 	panic("not implemented")
 }
 
 func (b *Binance) CancelAllOrders(ctx context.Context) error {
-	if err := b.initMarkets(); err != nil {
-		return err
-	}
 	panic("not implemented")
 }
 
 func (b *Binance) Order(ctx context.Context) error {
-	if err := b.initMarkets(); err != nil {
-		return err
-	}
 	panic("not implemented")
 }
 
 func (b *Binance) Orders(ctx context.Context) error {
-	if err := b.initMarkets(); err != nil {
-		return err
-	}
 	panic("not implemented")
 }
 
 func (b *Binance) OpenOrders(ctx context.Context) error {
-	if err := b.initMarkets(); err != nil {
-		return err
-	}
 	panic("not implemented")
 }
 
 func (b *Binance) ClosedOrders(ctx context.Context) error {
-	if err := b.initMarkets(); err != nil {
-		return err
-	}
 	panic("not implemented")
 }
 
