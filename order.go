@@ -16,10 +16,10 @@ const (
 
 // String returns the string value of s.
 func (s Side) String() string {
-	sidesString := [...]string{
-		"unknown",
-		"sell",
-		"buy",
+	sidesString := map[Side]string{
+		Unknown: "unknown",
+		Sell:    "sell",
+		Buy:     "buy",
 	}
 	return sidesString[s]
 }
@@ -40,11 +40,11 @@ const (
 
 // String returns the string value of os
 func (os OrderStatus) String() string {
-	statusString := [...]string{
-		"unknown",
-		"open",
-		"closed",
-		"canceled",
+	statusString := map[OrderStatus]string{
+		UnknownStatus: "unknown",
+		OrderOpen:     "open",
+		OrderClosed:   "closed",
+		OrderCanceled: "canceled",
 	}
 	return statusString[os]
 }
@@ -63,10 +63,10 @@ const (
 
 // String returns the string value of ot.
 func (ot OrderType) String() string {
-	orderTypeString := [...]string{
-		"unknown",
-		"market",
-		"limit",
+	orderTypeString := map[OrderType]string{
+		UnknownOrderType: "unknown",
+		MarketOrder:      "market",
+		LimitOrder:       "limit",
 	}
 	return orderTypeString[ot]
 }
